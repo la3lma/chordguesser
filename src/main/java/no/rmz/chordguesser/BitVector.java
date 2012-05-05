@@ -88,4 +88,34 @@ public final class BitVector {
         int bi = bit % NO_OF_BITS_IN_A_BYTE;
         return 0 != (bytes[by] & (1 << bi));
     }
+    
+    /**
+     * The bit-vector can be set to a bitpattern specified
+     * by a string, where the string "010" translates to 
+     * a bitvector "010" where the leftmotst bit is the 
+     * bit with index zero. The input string must contain
+     * only zeros and ones or an IllegalArgumentException will
+     * be thrown.
+     * @param bitString 
+     */
+    public void setFromString(final String bitString) {
+        if (bitString.length() != lengthInBits) {
+            throw new IllegalArgumentException("The input string does not contain the correct number of characters, expected " 
+                    + lengthInBits + " but got " + bitString.length());
+        }
+        
+        for (int i = 0, n = bitString.length(); i < n; i++) {
+            final char ch = bitString.charAt(i);
+
+            if (ch == '0') {
+                unset(i);
+            } else if (ch == '1') {
+                set(i);
+            } else {
+                throw new IllegalArgumentException("Unknon char in bit input string: " + ch);
+            }
+        }
+
+        
+    }
 }
