@@ -81,18 +81,30 @@ public class BitVectorTest {
         assertTrue("Expected three-bit to be false", instance.read(3));
         assertTrue("Expected four-bit to be false", instance.read(4));
     }
-    
-    
+
     @Test
     public void testBitwiseAnd() {
         final BitVector instance1 = new BitVector("0101");
         final BitVector instance2 = new BitVector("0011");
         final BitVector instance3 = new BitVector("0001");
         final BitVector instance4 = new BitVector(4);
-        
+
         BitVector.and(instance4, instance1, instance2);
-        
+
         assertEquals(instance4, instance3);
-        
+
+    }
+
+    @Test
+    public void testLongishBitwiseAnd() {
+        final BitVector instance1 = new BitVector("01010101010101010101010101010101010101010101010101010101010101010101010101010101");
+        final BitVector instance2 = new BitVector("00110011001100110011001100110011001100110011001100110011001100110011001100110011");
+        final BitVector instance3 = new BitVector("00010001000100010001000100010001000100010001000100010001000100010001000100010001");
+        final BitVector instance4 = new BitVector(80);
+
+        BitVector.and(instance4, instance1, instance2);
+
+        assertEquals(instance4, instance3);
+
     }
 }
