@@ -5,7 +5,7 @@
   <artifactId>chordguesser</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>my-app</name>
+  <name>chordguesser</name>
   <url>http://www.rmz.no/</url>
   <dependencies>
     <dependency>
