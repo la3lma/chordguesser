@@ -92,7 +92,6 @@ public class BitVectorTest {
         BitVector.and(instance4, instance1, instance2);
 
         assertEquals(instance4, instance3);
-
     }
 
     @Test

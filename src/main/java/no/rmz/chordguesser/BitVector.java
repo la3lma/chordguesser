@@ -13,8 +13,10 @@ public final class BitVector {
      * Everyone use eight bit bytes these days,
      * but imagine that once that was a configurable number
      * on decent architectures.  Ah, those where the days.
+     * In remenisance of those days I declare the right
+     * to hage 64 bit bytes coded as longs :-)
      */
-    private static final  int NO_OF_BITS_IN_A_BYTE = 8;
+    private static final  int NO_OF_BITS_IN_A_BYTE = 64;
 
    
 
@@ -32,7 +34,7 @@ public final class BitVector {
      * The eight-bit bytes that holds the bits.
      * Non-set bits are all zero.
      */
-    private final byte [] bytes;
+    private final long [] bytes;
 
   
     
@@ -74,7 +76,7 @@ public final class BitVector {
         }
         this.lengthInBits  = noOfBits;
         this.lengthInBytes = (noOfBits / NO_OF_BITS_IN_A_BYTE) + 1;
-        this.bytes         = new byte[lengthInBytes];
+        this.bytes         = new long[lengthInBytes];
     }
 
     /**
@@ -86,7 +88,7 @@ public final class BitVector {
         checkArg(bit);
         int by = bit / NO_OF_BITS_IN_A_BYTE;
         int bi = bit % NO_OF_BITS_IN_A_BYTE;
-        bytes[by] = (byte) (bytes[by] | (1 << bi));
+        bytes[by] = (long) (bytes[by] | (1 << bi));
     }
 
     /**
@@ -98,7 +100,7 @@ public final class BitVector {
         checkArg(bit);
         int by = bit / NO_OF_BITS_IN_A_BYTE;
         int bi = bit % NO_OF_BITS_IN_A_BYTE;
-        bytes[by] = (byte) (bytes[by] & ~(1 << bi));
+        bytes[by] = (long) (bytes[by] & ~(1 << bi));
     }
     
       /**
@@ -184,7 +186,7 @@ public final class BitVector {
         }
         
         for (int i = 0; i < result.lengthInBytes ; i++) {
-            result.bytes[i] = (byte) ((byte)op1.bytes[i] & (byte)op2.bytes[i]);
+            result.bytes[i] = (long) ((long)op1.bytes[i] & (long)op2.bytes[i]);
         }
     }
 
