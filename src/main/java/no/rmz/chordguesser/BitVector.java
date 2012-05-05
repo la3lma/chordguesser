@@ -18,13 +18,13 @@ public final class BitVector {
      */
     private static final  int NO_OF_BITS_IN_A_BYTE = 64;
 
-   
+
 
     /**
      * The number of bits.
      */
     private final int     lengthInBits;
-    
+
     /**
      * The number of bytes.
      */
@@ -36,12 +36,12 @@ public final class BitVector {
      */
     private final long [] bytes;
 
-  
-    
+
+
     /**
      * Throw an IllegalArgumentException if the
      * parameter is not a valid index into a bit.
-     * @param bit 
+     * @param bit
      */
     private  void checkArg(final int bit) {
         if (bit < 0) {
@@ -50,8 +50,8 @@ public final class BitVector {
             throw new IllegalArgumentException("Index larger than  length (" + lengthInBits + ")");
         }
     }
-    
-    
+
+
     /**
      * Create a bit vector that is initialized by the bits described in the
      * parameter string.
@@ -63,7 +63,7 @@ public final class BitVector {
         setFromString(string);
     }
 
-    
+
     /**
      * Create a bitvector with a length specified as number of
      * significant bits.  The bits are addressed in the range
@@ -102,7 +102,7 @@ public final class BitVector {
         int bi = bit % NO_OF_BITS_IN_A_BYTE;
         bytes[by] = (long) (bytes[by] & ~(1 << bi));
     }
-    
+
       /**
      * Set the bit no "bit" to 0.
      *
@@ -114,22 +114,22 @@ public final class BitVector {
         int bi = bit % NO_OF_BITS_IN_A_BYTE;
         return 0 != (bytes[by] & (1 << bi));
     }
-    
+
     /**
      * The bit-vector can be set to a bitpattern specified
-     * by a string, where the string "010" translates to 
-     * a bitvector "010" where the leftmotst bit is the 
+     * by a string, where the string "010" translates to
+     * a bitvector "010" where the leftmotst bit is the
      * bit with index zero. The input string must contain
      * only zeros and ones or an IllegalArgumentException will
      * be thrown.
-     * @param bitString 
+     * @param bitString
      */
     public void setFromString(final String bitString) {
         if (bitString.length() != lengthInBits) {
-            throw new IllegalArgumentException("The input string does not contain the correct number of characters, expected " 
+            throw new IllegalArgumentException("The input string does not contain the correct number of characters, expected "
                     + lengthInBits + " but got " + bitString.length());
         }
-        
+
         for (int i = 0, n = bitString.length(); i < n; i++) {
             final char ch = bitString.charAt(i);
 
@@ -172,9 +172,9 @@ public final class BitVector {
         hash = 37 * hash + Arrays.hashCode(this.bytes);
         return hash;
     }
-    
-    
-    
+
+
+
      /**
      * Combine the results of op1 and op2 into result.
      * All the four operators must be of equal length for this
@@ -184,11 +184,9 @@ public final class BitVector {
         if (result.lengthInBits != op1.lengthInBits || result.lengthInBits != op2.lengthInBits) {
             throw new IllegalArgumentException("both operands and the result must have the same number of bits");
         }
-        
+
         for (int i = 0; i < result.lengthInBytes ; i++) {
             result.bytes[i] = (long) ((long)op1.bytes[i] & (long)op2.bytes[i]);
         }
     }
-
-   
 }
