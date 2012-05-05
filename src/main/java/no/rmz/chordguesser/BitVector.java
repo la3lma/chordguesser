@@ -17,7 +17,7 @@ public final class BitVector {
     /**
      * The number of bits.
      */
-    private final int     length;
+    private final int     lengthInBits;
 
     /**
      * The eight-bit bytes that holds the bits.
@@ -25,15 +25,32 @@ public final class BitVector {
      */
     private final byte [] bytes;
 
+    
+    /**
+     * Throw an IllegalArgumentException if the
+     * parameter is not a valid index into a bit.
+     * @param bit 
+     */
+    private  void checkArg(final int bit) {
+        if (bit < 0) {
+            throw new IllegalArgumentException("Index less than zero");
+        } else if (bit >= lengthInBits) {
+            throw new IllegalArgumentException("Index larger than  length (" + lengthInBits + ")");
+        }
+    }
+    
     /**
      * Create a bitvector with a length specified as number of
      * significant bits.  The bits are addressed in the range
-     * 0 .. (length-1)
-     * @param l
+     * 0 .. (lengthInBits-1)
+     * @param noOfBits
      */
-    public BitVector(final int l) {
-        this.length = l;
-        this.bytes  = new byte[(l / NO_OF_BITS_IN_A_BYTE) + 1];
+    public BitVector(final int noOfBits) {
+        if (noOfBits < 1) {
+            throw new IllegalArgumentException("No of bits less than one");
+        }
+        this.lengthInBits = noOfBits;
+        this.bytes  = new byte[(noOfBits / NO_OF_BITS_IN_A_BYTE) + 1];
     }
 
     /**
@@ -42,6 +59,7 @@ public final class BitVector {
      * @param bit the bit to set.
      */
     public void set(final int bit) {
+        checkArg(bit);
         int by = bit / NO_OF_BITS_IN_A_BYTE;
         int bi = bit % NO_OF_BITS_IN_A_BYTE;
         bytes[by] = (byte) (bytes[by] | (1 << bi));
@@ -53,8 +71,21 @@ public final class BitVector {
      * @param bit the bit to clear.
      */
     public void unset(final int bit) {
+        checkArg(bit);
         int by = bit / NO_OF_BITS_IN_A_BYTE;
         int bi = bit % NO_OF_BITS_IN_A_BYTE;
         bytes[by] = (byte) (bytes[by] & ~(1 << bi));
+    }
+    
+      /**
+     * Set the bit no "bit" to 0.
+     *
+     * @param bit the bit to clear.
+     */
+    public boolean read(final int bit) {
+        checkArg(bit);
+        int by = bit / NO_OF_BITS_IN_A_BYTE;
+        int bi = bit % NO_OF_BITS_IN_A_BYTE;
+        return 0 != (bytes[by] & (1 << bi));
     }
 }
