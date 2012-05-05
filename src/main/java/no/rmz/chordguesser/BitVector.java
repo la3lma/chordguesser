@@ -1,5 +1,7 @@
 package no.rmz.chordguesser;
 
+import java.util.Arrays;
+
 /**
  * Perhaps it is a clever idea to use bitvectors to
  * hold chord states? If so it's nice to have a class
@@ -14,10 +16,17 @@ public final class BitVector {
      */
     private static final  int NO_OF_BITS_IN_A_BYTE = 8;
 
+   
+
     /**
      * The number of bits.
      */
     private final int     lengthInBits;
+    
+    /**
+     * The number of bytes.
+     */
+    private final int     lengthInBytes;
 
     /**
      * The eight-bit bytes that holds the bits.
@@ -25,6 +34,7 @@ public final class BitVector {
      */
     private final byte [] bytes;
 
+  
     
     /**
      * Throw an IllegalArgumentException if the
@@ -39,6 +49,19 @@ public final class BitVector {
         }
     }
     
+    
+    /**
+     * Create a bit vector that is initialized by the bits described in the
+     * parameter string.
+     *
+     * @param string
+     */
+    public BitVector(final String string) {
+        this(string.length());
+        setFromString(string);
+    }
+
+    
     /**
      * Create a bitvector with a length specified as number of
      * significant bits.  The bits are addressed in the range
@@ -49,8 +72,9 @@ public final class BitVector {
         if (noOfBits < 1) {
             throw new IllegalArgumentException("No of bits less than one");
         }
-        this.lengthInBits = noOfBits;
-        this.bytes  = new byte[(noOfBits / NO_OF_BITS_IN_A_BYTE) + 1];
+        this.lengthInBits  = noOfBits;
+        this.lengthInBytes = (noOfBits / NO_OF_BITS_IN_A_BYTE) + 1;
+        this.bytes         = new byte[lengthInBytes];
     }
 
     /**
@@ -115,7 +139,54 @@ public final class BitVector {
                 throw new IllegalArgumentException("Unknon char in bit input string: " + ch);
             }
         }
-
-        
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BitVector other = (BitVector) obj;
+        if (this.lengthInBits != other.lengthInBits) {
+            return false;
+        }
+        if (this.lengthInBytes != other.lengthInBytes) {
+            return false;
+        }
+        if (!Arrays.equals(this.bytes, other.bytes)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + this.lengthInBits;
+        hash = 37 * hash + this.lengthInBytes;
+        hash = 37 * hash + Arrays.hashCode(this.bytes);
+        return hash;
+    }
+    
+    
+    
+     /**
+     * Combine the results of op1 and op2 into result.
+     * All the four operators must be of equal length for this
+     * operation to succeed.
+     */
+    static void and(final BitVector result, final BitVector op1, final BitVector op2) {
+        if (result.lengthInBits != op1.lengthInBits || result.lengthInBits != op2.lengthInBits) {
+            throw new IllegalArgumentException("both operands and the result must have the same number of bits");
+        }
+        
+        for (int i = 0; i < result.lengthInBytes ; i++) {
+            result.bytes[i] = (byte) ((byte)op1.bytes[i] & (byte)op2.bytes[i]);
+        }
+    }
+
+   
 }
