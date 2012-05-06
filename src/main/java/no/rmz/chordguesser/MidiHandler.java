@@ -1,8 +1,6 @@
 package no.rmz.chordguesser;
 
-
 import java.util.List;
-import java.util.logging.Logger;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Receiver;
@@ -14,9 +12,9 @@ public final class MidiHandler {
 
     public MidiHandler() {
     }
-    
+
     public void run() {
-        
+
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
         for (int i = 0; i < infos.length; i++) {
             try {
@@ -29,7 +27,7 @@ public final class MidiHandler {
                 final List<Transmitter> transmitters = device.getTransmitters();
                 //and for each transmitter
 
-                for ( int j = 0; j < transmitters.size(); j++) {
+                for (int j = 0; j < transmitters.size(); j++) {
                     //create a new receiver
                     transmitters.get(j).setReceiver(
                             //using my own MidiInputReceiver
@@ -47,7 +45,7 @@ public final class MidiHandler {
 
 
             } catch (MidiUnavailableException e) {
-               throw new RuntimeException(e);
+                throw new RuntimeException(e);
             }
         }
     }
@@ -55,7 +53,6 @@ public final class MidiHandler {
     // XXX See http://www.ibm.com/developerworks/library/it/it-0801art38/
     //     http://www.gweep.net/~prefect/eng/reference/protocol/midispec.html
     //     https://ccrma.stanford.edu/~craig/articles/linuxmidi/misc/essenmidi.html
-    
     public final class MidiInputReceiver implements Receiver {
 
         public String name;
@@ -69,14 +66,14 @@ public final class MidiHandler {
             System.out.println("midi received " + msg.toString());
             final byte[] m = msg.getMessage();
             System.out.printf("%02X%02X%02X%02X\n",
-                    m[0], m[1], m[2], (m.length==4)?m[3]:0);
+                    m[0], m[1], m[2], (m.length == 4) ? m[3] : 0);
+            
+            // XXX Detect tone on and tone off and send those down the line,
+            //     ignore everything else.
         }
 
         @Override
         public void close() {
         }
     }
-    
-    
-
 }
