@@ -15,12 +15,13 @@ public final class MidiInputReceiver implements Receiver {
     
     private final String name;
     private final NoteListener listener;
+    private final MidiMessageDecoder mmd;
 
      public MidiInputReceiver(final String name, final NoteListener listener) {
          // XXX Check for nulls.
         this.name = name;
         this.listener = listener;
-                
+        this.mmd = new MidiMessageDecoder(listener); 
     }
 
   
@@ -34,14 +35,8 @@ public final class MidiInputReceiver implements Receiver {
         System.out.printf("%02X%02X%02X%02X\n", m[0], m[1], m[2], (m.length == 4) ? m[3] : 0);
         // XXX Detect tone on and tone off and send those down the line,
         //     ignore everything else.
-        
-        final MidiCmd cmd = MidiMessageDecoder.getCmdFromByte(m[0]);
-        final int chan    = MidiMessageDecoder.getMidiChannelFromByte(m[0]);
-        if (cmd == MidiCmd.NOTE_ON) {
-            listener.noteOn(m[1]);
-        } else  if (cmd == MidiCmd.NOTE_OFF) {
-            listener.noteOn(m[1]);
-        }
+        mmd.decode(m);
+       
     }
 
     @Override
