@@ -106,8 +106,7 @@ public class ScaleCsvReader {
         //         http://opencsv.sourceforge.net/apidocs/index.html
         //         http://opencsv.sourceforge.net/,
 
-        System.out.println("Before returning");
-        // XXX Should be a resource instead
+
         final InputStream scaleCsvStream = this.getClass().getResourceAsStream(SCALE_CSV_RESOURCE_PATH);
         checkNotNull(scaleCsvStream, "scaleCsvStram can't be null. Probably couldn't locate scale csv resource " + SCALE_CSV_RESOURCE_PATH);
         final InputStreamReader inputStreamReader = new InputStreamReader(scaleCsvStream, "UTF-8");
