@@ -1,20 +1,24 @@
 package no.rmz.chordguesser;
 
 public final class MidiMessageDecoder {
-    
-    
+
+
 
     private final static int NIBBLE_LENGTH_IN_BITS = 4;
-    
+
     private MidiMessageDecoder() {}
 
 
-    public static byte getHighNibble(final byte b) {
-         return (byte) ((byte) b >> NIBBLE_LENGTH_IN_BITS);
+    public static byte getHighNibble(byte a) {
+
+        final byte nibble2 = (byte) ((0xF0 & a) / 16);
+        return nibble2;
     }
 
     public static byte getLowNibble(final byte b) {
-        return (byte) ((byte) b << NIBBLE_LENGTH_IN_BITS);
+
+        final byte nibble1 = (byte) (0x0F & b);
+        return nibble1;
     }
 
     public static MidiCmd getCmdFromByte(final byte b) {
