@@ -28,15 +28,7 @@ public final class MidiInputReceiver implements Receiver {
 
     @Override
     public void send(final MidiMessage msg, final long timeStamp) {
-        System.out.println("midi received " + msg.toString());
-        final byte[] m = msg.getMessage();
-        
-        
-        System.out.printf("%02X%02X%02X%02X\n", m[0], m[1], m[2], (m.length == 4) ? m[3] : 0);
-        // XXX Detect tone on and tone off and send those down the line,
-        //     ignore everything else.
-        mmd.decode(m);
-       
+         mmd.decode(msg.getMessage(), timeStamp);
     }
 
     @Override

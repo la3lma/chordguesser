@@ -51,7 +51,9 @@ public final class MidiMessageDecoder {
         this.listener = listener;
     }
 
-    void decode(final byte[] m) {
+    void decode(final byte[] m, final long timestamp) {
+        // XXX Just to see that we're alive. Remove asap.
+        System.out.printf("%02X%02X%02X%02X\n", m[0], m[1], m[2], (m.length == 4) ? m[3] : 0);
         final MidiCmd cmd = getCmdFromByte(m[0]);
         final int chan = getMidiChannelFromByte(m[0]);
         if (cmd == MidiCmd.NOTE_ON) {
