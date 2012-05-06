@@ -123,9 +123,4 @@ public class ScaleCsvReader {
         }
         return result;
     }
-
-    public static void main(final String[] args) throws Exception {
-        final ScaleCsvReader scaleCsvReader = new ScaleCsvReader();
-        scaleCsvReader.readScalesFromResourceCsv();;
-    }
 }
