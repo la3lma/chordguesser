@@ -7,10 +7,15 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException;
+import static com.google.common.base.Preconditions.*;
 
 public final class MidiHandler {
 
-    public MidiHandler() {
+    private final ToneListener listener;
+    
+    public MidiHandler(final ToneListener listener) {
+        checkNotNull(listener, "The MidiHandler must have a ToneListener instance");
+        this.listener = listener;
     }
 
     public void run() {
