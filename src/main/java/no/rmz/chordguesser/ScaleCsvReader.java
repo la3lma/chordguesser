@@ -1,11 +1,14 @@
 package no.rmz.chordguesser;
 
+import static com.google.common.base.Preconditions.*;
 import au.com.bytecode.opencsv.CSVReader;
-import java.io.FileReader;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScaleCsvReader {
 
+    private final static String SCALE_CSV_RESOURCE_PATH = "/scaleCodingjan2011.csv";
     private final static int iAlternativeScaleNames_I = 0;
     private final static int iAscendingNotePositionsinScale_I = 1;
     private final static int iAugTriads_I = 2;
@@ -45,118 +48,84 @@ public class ScaleCsvReader {
     private final static int iTuningTablefromTonicGSharp_I = 37;
     private final static int iWorkExample_I = 38;
 
-    public final static class ScaleBean {
-
-        public String AlternativeScaleNames;
-        public String AscendingNotePositionsinScale;
-        public String AugTriads;
-        public String Binary12notes;
-        public String Composer;
-        public String ContiguousNotes;
-        public String DimTriads;
-        public String DissonanceIndex;
-        public String FlatmostNote;
-        public String LandsIntervalSequence;
-        public String LengthOfChain;
-        public String MajorTriadsMinorTriads;
-        public String NameOfScale;
-        public String NoOfMissingNotesinChain;
-        public String NoteNamesfromC;
-        public String NotesInStepsOfFifths;
-        public String NumberOfNotesInScale;
-        public String NumberOfIntervals;
-        public String PitchSetbinary;
-        public String PitchSetNotation12edo;
-        public String PositionOfTonic;
-        public String ReferenceUrl;
-        public String ScaleCodingSharpmostNote;
-        public String TotalStepsBetweenAllIntervals;
-        public String TuningTablefromTonicA;
-        public String TuningTablefromTonicAb;
-        public String TuningTablefromTonicB;
-        public String TuningTablefromTonicBb;
-        public String TuningTablefromTonicC;
-        public String TuningTablefromTonicCSharp;
-        public String TuningTablefromTonicD;
-        public String TuningTablefromTonicE;
-        public String TuningTablefromTonicEb;
-        public String TuningTablefromTonicF;
-        public String TuningTablefromTonicFSharp;
-        public String TuningTablefromTonicG;
-        public String TuningTablefromTonicGSharp;
-        public String WorkExample;
-
-        @Override
-        public String toString() {
-            return "ScaleBean{" + "AlternativeScaleNames=" + AlternativeScaleNames + ", AscendingNotePositionsinScale=" + AscendingNotePositionsinScale + ", AugTriads=" + AugTriads + ", Binary12notes=" + Binary12notes + ", Composer=" + Composer + ", ContiguousNotes=" + ContiguousNotes + ", DimTriads=" + DimTriads + ", DissonanceIndex=" + DissonanceIndex + ", FlatmostNote=" + FlatmostNote + ", LandsIntervalSequence=" + LandsIntervalSequence + ", LengthOfChain=" + LengthOfChain + ", MajorTriadsMinorTriads=" + MajorTriadsMinorTriads + ", NameOfScale=" + NameOfScale + ", NoOfMissingNotesinChain=" + NoOfMissingNotesinChain + ", NoteNamesfromC=" + NoteNamesfromC + ", NotesInStepsOfFifths=" + NotesInStepsOfFifths + ", NumberOfNotesInScale=" + NumberOfNotesInScale + ", NumberOfIntervals=" + NumberOfIntervals + ", PitchSetbinary=" + PitchSetbinary + ", PitchSetNotation12edo=" + PitchSetNotation12edo + ", PositionOfTonic=" + PositionOfTonic + ", ReferenceUrl=" + ReferenceUrl + ", ScaleCodingSharpmostNote=" + ScaleCodingSharpmostNote + ", TotalStepsBetweenAllIntervals=" + TotalStepsBetweenAllIntervals + ", TuningTablefromTonicA=" + TuningTablefromTonicA + ", TuningTablefromTonicAb=" + TuningTablefromTonicAb + ", TuningTablefromTonicB=" + TuningTablefromTonicB + ", TuningTablefromTonicBb=" + TuningTablefromTonicBb + ", TuningTablefromTonicC=" + TuningTablefromTonicC + ", TuningTablefromTonicCSharp=" + TuningTablefromTonicCSharp + ", TuningTablefromTonicD=" + TuningTablefromTonicD + ", TuningTablefromTonicE=" + TuningTablefromTonicE + ", TuningTablefromTonicEb=" + TuningTablefromTonicEb + ", TuningTablefromTonicF=" + TuningTablefromTonicF + ", TuningTablefromTonicFSharp=" + TuningTablefromTonicFSharp + ", TuningTablefromTonicG=" + TuningTablefromTonicG + ", TuningTablefromTonicGSharp=" + TuningTablefromTonicGSharp + ", WorkExample=" + WorkExample + '}';
-        }
-
+    private static String get(int i, final String s[]) {
+        return (i < s.length) ? s[i] : null;
     }
 
-    private  static String get(int i, final String s[]) {
-        return (i<s.length)?s[i]:null;
-    }
-    
-    
+    /**
+     * Assign fields from the array we've just read to fields in the ScaleBean
+     * we're populating. Unspecified fields in the source array will be set to
+     * null in the bean.
+     */
     private static void assign(final ScaleBean target, final String[] source) {
-        target.AlternativeScaleNames =  get(iAlternativeScaleNames_I, source);
-        target.AscendingNotePositionsinScale =  get(iAscendingNotePositionsinScale_I, source);
-        target.AugTriads =  get(iAugTriads_I, source);
-        target.Binary12notes =  get(iBinary12notes_I, source);
-        target.Composer =  get(iComposer_I, source);
-        target.ContiguousNotes =  get(iContiguousNotes_I, source);
-        target.DimTriads =  get(iDimTriads_I, source);
-        target.DissonanceIndex =  get(iDissonanceIndex_I, source);
-        target.FlatmostNote =  get(iFlatmostNote_I, source);
-        target.LandsIntervalSequence =  get(iLandsIntervalSequence_I, source);
-        target.LengthOfChain =  get(iLengthOfChain_I, source);
-        target.MajorTriadsMinorTriads =  get(iMajorTriadsMinorTriads_I, source);
-        target.NameOfScale =  get(iNameOfScale_I, source);
-        target.NoOfMissingNotesinChain =  get(iNoOfMissingNotesinChain_I, source);
-        target.NoteNamesfromC =  get(iNoteNamesfromC_I, source);
-        target.NotesInStepsOfFifths =  get(iNotesInStepsOfFifths_I, source);
-        target.NumberOfNotesInScale =  get(iNumberOfNotesInScale_I, source);
-        target.NumberOfIntervals =  get(iNumberOfIntervals_I, source);
-        target.PitchSetbinary =  get(iPitchSetbinary_I, source);
-        target.PitchSetNotation12edo =  get(iPitchSetNotation12edo_I, source);
-        target.PositionOfTonic =  get(iPositionOfTonic_I, source);
-        target.ReferenceUrl =  get(iReferenceUrl_I, source);
-        target.ScaleCodingSharpmostNote =  get(iScaleCodingSharpmostNote_I, source);
-        target.TotalStepsBetweenAllIntervals =  get(iTotalStepsBetweenAllIntervals_I, source);
-        target.TuningTablefromTonicA =  get(iTuningTablefromTonicA_I, source);
-        target.TuningTablefromTonicAb =  get(iTuningTablefromTonicAb_I, source);
-        target.TuningTablefromTonicB =  get(iTuningTablefromTonicB_I, source);
-        target.TuningTablefromTonicBb =  get(iTuningTablefromTonicBb_I, source);
-        target.TuningTablefromTonicC =  get(iTuningTablefromTonicC_I, source);
-        target.TuningTablefromTonicCSharp =  get(iTuningTablefromTonicCSharp_I, source);
-        target.TuningTablefromTonicD =  get(iTuningTablefromTonicD_I, source);
-        target.TuningTablefromTonicE =  get(iTuningTablefromTonicE_I, source);
-        target.TuningTablefromTonicEb =  get(iTuningTablefromTonicEb_I, source);
-        target.TuningTablefromTonicF =  get(iTuningTablefromTonicF_I, source);
-        target.TuningTablefromTonicFSharp =  get(iTuningTablefromTonicFSharp_I, source);
-        target.TuningTablefromTonicG =  get(iTuningTablefromTonicG_I, source);
-        target.TuningTablefromTonicGSharp =  get(iTuningTablefromTonicGSharp_I, source);
-        target.WorkExample =  get(iWorkExample_I, source);
+        target.AlternativeScaleNames = get(iAlternativeScaleNames_I, source);
+        target.AscendingNotePositionsinScale = get(iAscendingNotePositionsinScale_I, source);
+        target.AugTriads = get(iAugTriads_I, source);
+        target.Binary12notes = get(iBinary12notes_I, source);
+        target.Composer = get(iComposer_I, source);
+        target.ContiguousNotes = get(iContiguousNotes_I, source);
+        target.DimTriads = get(iDimTriads_I, source);
+        target.DissonanceIndex = get(iDissonanceIndex_I, source);
+        target.FlatmostNote = get(iFlatmostNote_I, source);
+        target.LandsIntervalSequence = get(iLandsIntervalSequence_I, source);
+        target.LengthOfChain = get(iLengthOfChain_I, source);
+        target.MajorTriadsMinorTriads = get(iMajorTriadsMinorTriads_I, source);
+        target.NameOfScale = get(iNameOfScale_I, source);
+        target.NoOfMissingNotesinChain = get(iNoOfMissingNotesinChain_I, source);
+        target.NoteNamesfromC = get(iNoteNamesfromC_I, source);
+        target.NotesInStepsOfFifths = get(iNotesInStepsOfFifths_I, source);
+        target.NumberOfNotesInScale = get(iNumberOfNotesInScale_I, source);
+        target.NumberOfIntervals = get(iNumberOfIntervals_I, source);
+        target.PitchSetbinary = get(iPitchSetbinary_I, source);
+        target.PitchSetNotation12edo = get(iPitchSetNotation12edo_I, source);
+        target.PositionOfTonic = get(iPositionOfTonic_I, source);
+        target.ReferenceUrl = get(iReferenceUrl_I, source);
+        target.ScaleCodingSharpmostNote = get(iScaleCodingSharpmostNote_I, source);
+        target.TotalStepsBetweenAllIntervals = get(iTotalStepsBetweenAllIntervals_I, source);
+        target.TuningTablefromTonicA = get(iTuningTablefromTonicA_I, source);
+        target.TuningTablefromTonicAb = get(iTuningTablefromTonicAb_I, source);
+        target.TuningTablefromTonicB = get(iTuningTablefromTonicB_I, source);
+        target.TuningTablefromTonicBb = get(iTuningTablefromTonicBb_I, source);
+        target.TuningTablefromTonicC = get(iTuningTablefromTonicC_I, source);
+        target.TuningTablefromTonicCSharp = get(iTuningTablefromTonicCSharp_I, source);
+        target.TuningTablefromTonicD = get(iTuningTablefromTonicD_I, source);
+        target.TuningTablefromTonicE = get(iTuningTablefromTonicE_I, source);
+        target.TuningTablefromTonicEb = get(iTuningTablefromTonicEb_I, source);
+        target.TuningTablefromTonicF = get(iTuningTablefromTonicF_I, source);
+        target.TuningTablefromTonicFSharp = get(iTuningTablefromTonicFSharp_I, source);
+        target.TuningTablefromTonicG = get(iTuningTablefromTonicG_I, source);
+        target.TuningTablefromTonicGSharp = get(iTuningTablefromTonicGSharp_I, source);
+        target.WorkExample = get(iWorkExample_I, source);
 
+    }
+
+    public List<ScaleBean> readScalesFromResourceCsv() throws FileNotFoundException, IOException {
+
+        // XXX This is fairly inefficient parsing, but if more efficiency
+        //     is needed, (that's not certain), hints can be found here:
+        //         http://opencsv.sourceforge.net/apidocs/index.html
+        //         http://opencsv.sourceforge.net/,
+
+        System.out.println("Before returning");
+        // XXX Should be a resource instead
+        final InputStream scaleCsvStream = this.getClass().getResourceAsStream(SCALE_CSV_RESOURCE_PATH);
+        checkNotNull(scaleCsvStream, "scaleCsvStram can't be null. Probably couldn't locate scale csv resource " + SCALE_CSV_RESOURCE_PATH);
+        final InputStreamReader inputStreamReader = new InputStreamReader(scaleCsvStream, "UTF-8");
+
+        final CSVReader chords = new CSVReader(inputStreamReader);
+        final List<String[]> allChordsAsArrays = chords.readAll();
+
+        final List<ScaleBean> result = new ArrayList<ScaleBean>(allChordsAsArrays.size() - 1);
+        for (final String[] v : allChordsAsArrays.subList(1, allChordsAsArrays.size())) {
+            final ScaleBean b = new ScaleBean();
+            assign(b, v);
+            result.add(b);
+        }
+        return result;
     }
 
     public static void main(final String[] args) throws Exception {
-
-
-        // http://opencsv.sourceforge.net/apidocs/index.html
-        // Check out http://opencsv.sourceforge.net/, use the bean reader
-        // feature if possible
-        System.out.println("Before returning");
-        // XXX Should be a resource instead
-        final CSVReader chords = new CSVReader(new FileReader("../../data/scaleCodingjan2011.csv"));
-        final List<String[]> readAll = chords.readAll();
-        System.out.println("Read " + readAll.size() + " chords");
-        int i = 1;
-        for (String[] v : readAll) {
-            System.out.println(i++ + ":" + v[0]);
-            final ScaleBean b = new ScaleBean();
-            assign(b, v);
-            System.out.println("   " + b.toString());
-        }
+        final ScaleCsvReader scaleCsvReader = new ScaleCsvReader();
+        scaleCsvReader.readScalesFromResourceCsv();;
     }
 }
