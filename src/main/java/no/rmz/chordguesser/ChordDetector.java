@@ -7,16 +7,14 @@ public class ChordDetector {
     private final String shorthandName;
     private final int    baseTone;
 
-    public ChordDetector(final String longName, final String shorthandName, int baseTone, final PolyphonicState chordNotes) {
-        this.chordNotes = chordNotes;
-        this.longName = longName;
+    public ChordDetector(
+            final String longName,
+            final String shorthandName,
+            int baseTone,
+            final PolyphonicState chordNotes) {
+        this.chordNotes    = chordNotes;
+        this.longName      = longName;
         this.shorthandName = shorthandName;
-        this.baseTone = baseTone;
+        this.baseTone      = baseTone;
     }
-    
-    
-    
-    
-    
-    
 }

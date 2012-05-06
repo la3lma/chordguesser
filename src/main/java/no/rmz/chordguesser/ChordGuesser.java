@@ -16,7 +16,7 @@ public class ChordGuesser {
         
         final PolyphonicState ps = new PolyphonicState();
         
-       final  ToneListener tl = new ToneListener() {
+       final  NoteListener tl = new NoteListener() {
 
             public void noteOff(int i) {
                 System.out.println("noteOff: " + i);

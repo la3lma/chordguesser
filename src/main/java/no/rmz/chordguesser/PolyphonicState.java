@@ -7,7 +7,7 @@ package no.rmz.chordguesser;
  * generated on that note any longer, so the corresponding state is then
  * removed.
  */
-public final class PolyphonicState implements ToneListener {
+public final class PolyphonicState implements NoteListener {
 
     private final static int MAX_NO_OF_MIDI_NOTES = 128;
     private final BitVector stateVector = new BitVector(MAX_NO_OF_MIDI_NOTES);
