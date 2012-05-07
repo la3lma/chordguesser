@@ -2,7 +2,12 @@ package no.rmz.chordguesser;
 
 import org.junit.*;
 import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import static org.mockito.Mockito.*;
+import org.mockito.runners.MockitoJUnit44Runner;
 
+@RunWith(MockitoJUnit44Runner.class)
 public final class MidiMessageDecoderTest {
 
     /**
@@ -21,7 +26,7 @@ public final class MidiMessageDecoderTest {
      */
     @Test
     public void testGetLowNibble() {
-        final byte b = (byte) 0xAB;
+        final byte b = (byte)  0xAB;
         final byte expResult = 0xB;
         final byte result = MidiMessageDecoder.getLowNibble(b);
         assertEquals(expResult, result);
@@ -58,5 +63,31 @@ public final class MidiMessageDecoderTest {
         final int expResult = (byte) 0xE;
         final int result = MidiMessageDecoder.getMidiChannelFromByte(b);
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getCmdFromByte method, of class MidiMessageDecoder.
+     */
+    @Test
+    public void testGetCmdFromByte() {
+        final byte b = (byte)0x90;
+        final MidiCmd expResult = MidiCmd.NOTE_ON;
+        final MidiCmd result = MidiMessageDecoder.getCmdFromByte(b);
+        assertEquals(expResult, result);
+    }
+
+    @Mock NoteListener noteListener;
+    
+    /**
+     * Test of decode method, of class MidiMessageDecoder.
+     */
+    @Test
+    public void testDecodeMiddleCToneOn() {
+        // XXXX Don't use 60, say what it means.
+        final byte[] m = new byte[] {(byte)0x90, (byte)60, (byte)60};
+        final long timestamp = 4711L;
+        final MidiMessageDecoder instance = new MidiMessageDecoder(noteListener);
+        instance.decode(m, timestamp);
+        verify(noteListener).noteOn(60);
     }
 }
