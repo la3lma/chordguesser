@@ -1,8 +1,6 @@
 package no.rmz.chordguesser;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,11 +13,20 @@ public final class ChordAndScaleDatabase {
 
     private final static Logger LOG = Logger.getLogger(ChordAndScaleDatabase.class.getName());
 
-    private final Map<BitVector, ScaleBean> db =
-            new TreeMap<BitVector, ScaleBean>();
+    private final Map<BitVector, Set<ScaleBean>> scaledb =
+            new TreeMap<BitVector, Set<ScaleBean>>();
+    
+    private final Set<ScaleBean> allScales = new HashSet<ScaleBean>();
+    
+    
+    public int noOfScales() {
+        synchronized (scaledb) {
+            return allScales.size();
+        }
+    }
 
     public void importScale(final ScaleBean entry) {
-        synchronized (db) {
+        synchronized (scaledb) {
           
             final String binary12notes = entry.getBinary12notes();
             if (binary12notes.length() < 1) {
@@ -27,14 +34,20 @@ public final class ChordAndScaleDatabase {
                 LOG.log(Level.WARNING, "Scale with no binary representation: {0}", entry.toString());
             } else {
                 final BitVector bv = new BitVector(binary12notes);
-                if (db.containsKey(bv)) {
-                    throw new IllegalStateException("Attempt to redefine scale " + entry.getNameOfScale());
+                final Set<ScaleBean> targetSet;
+                if (!scaledb.containsKey(bv)) {
+                    targetSet = new HashSet<ScaleBean>();
+                    scaledb.put(bv, targetSet);
+                } else {
+                    targetSet = scaledb.get(bv);
                 }
+                allScales.add(entry);
+                targetSet.add(entry);
             }
         }
     }
 
-    public void  importAll (final Collection<ScaleBean> entries) {
+    public void  importAllScales (final Collection<ScaleBean> entries) {
         for (final ScaleBean sb: entries) {
             importScale(sb);
         }

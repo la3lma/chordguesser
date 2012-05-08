@@ -5,25 +5,7 @@ import org.junit.*;
 import static org.junit.Assert.*;
 
 public class ChordAndScaleDatabaseTest {
-    
-    public ChordAndScaleDatabaseTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
-    
-    @Before
-    public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
-    }
+   
 
     /**
      * Test of populate method, of class ChordDatabase.
@@ -32,8 +14,11 @@ public class ChordAndScaleDatabaseTest {
     public void testPopulate() throws Exception {
         final ScaleCsvReader scr = new ScaleCsvReader();
         final List<ScaleBean> entries = scr.readScalesFromResourceCsv();
+        assertNotNull(entries);
         final ChordAndScaleDatabase instance = new ChordAndScaleDatabase();
-        instance.importAll(entries);
-        // XXX No tests, just keep moving ;)
+        instance.importAllScales(entries);
+        // XXX -1 is  a fudge factor.  It should be removed by fixing
+        //     something in the CSV reader.
+        assertEquals(entries.size() -1 , instance.noOfScales());
     }
 }
