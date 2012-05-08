@@ -7,7 +7,7 @@ import java.util.Arrays;
  * hold chord states? If so it's nice to have a class
  * to encapsulate them.
  */
-public final class BitVector {
+public final class BitVector implements Comparable<BitVector>{
 
     /**
      * Everyone use eight bit bytes these days,
@@ -56,11 +56,11 @@ public final class BitVector {
      * Create a bit vector that is initialized by the bits described in the
      * parameter string.
      *
-     * @param string
+     * @param initializingString
      */
-    public BitVector(final String string) {
-        this(string.length());
-        setFromString(string);
+    public BitVector(final String initializingString) {
+        this(initializingString.length());
+        setFromString(initializingString);
     }
 
 
@@ -144,7 +144,7 @@ public final class BitVector {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }
@@ -175,6 +175,7 @@ public final class BitVector {
 
 
 
+
      /**
      * Combine the results of op1 and op2 into result.
      * All the four operators must be of equal length for this
@@ -188,5 +189,23 @@ public final class BitVector {
         for (int i = 0; i < result.lengthInBytes ; i++) {
             result.bytes[i] = (long) ((long)op1.bytes[i] & (long)op2.bytes[i]);
         }
+    }
+
+    @Override
+    public int compareTo(final BitVector other) {
+        if (lengthInBits!= lengthInBits) {
+            throw new IllegalArgumentException("Attempt to compare bit vectors of different lengths");
+        }
+
+        for (int i = 0 ; i < lengthInBytes ; i++) {
+            final long  a =  bytes[i];
+            final long  b =  other.bytes[i];
+            if (a < b) {
+                return -1;
+            } else if (a >b) {
+                return 1;
+            }
+        }
+        return 0;
     }
 }

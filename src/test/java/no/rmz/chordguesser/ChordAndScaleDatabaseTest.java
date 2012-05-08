@@ -4,9 +4,9 @@ import java.util.List;
 import org.junit.*;
 import static org.junit.Assert.*;
 
-public class ChordDatabaseTest {
+public class ChordAndScaleDatabaseTest {
     
-    public ChordDatabaseTest() {
+    public ChordAndScaleDatabaseTest() {
     }
 
     @BeforeClass
@@ -32,8 +32,8 @@ public class ChordDatabaseTest {
     public void testPopulate() throws Exception {
         final ScaleCsvReader scr = new ScaleCsvReader();
         final List<ScaleBean> entries = scr.readScalesFromResourceCsv();
-        final ChordDatabase instance = new ChordDatabase();
-        instance.populate(entries);
+        final ChordAndScaleDatabase instance = new ChordAndScaleDatabase();
+        instance.importAll(entries);
         // XXX No tests, just keep moving ;)
     }
 }
