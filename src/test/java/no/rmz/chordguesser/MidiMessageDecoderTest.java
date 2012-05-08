@@ -90,4 +90,19 @@ public final class MidiMessageDecoderTest {
         instance.decode(m, timestamp);
         verify(noteListener).noteOn(60);
     }
+    
+    /**
+     * Test of decode method, of class MidiMessageDecoder.
+     */
+    @Test
+    public void testDecodeAllTonesCToneOn() {
+        for (int tone = 0; tone < 128; tone++) {
+            final byte[] m = new byte[]{(byte) 0x90, (byte) tone, (byte) 60};
+            final long timestamp = 4711L;
+            noteListener = mock(NoteListener.class);
+            final MidiMessageDecoder instance = new MidiMessageDecoder(noteListener);
+            instance.decode(m, timestamp);
+            verify(noteListener).noteOn(tone);
+        }
+    }
 }
