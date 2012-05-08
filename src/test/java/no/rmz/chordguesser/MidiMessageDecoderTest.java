@@ -10,8 +10,7 @@ import org.mockito.runners.MockitoJUnit44Runner;
 @RunWith(MockitoJUnit44Runner.class)
 public final class MidiMessageDecoderTest {
 
-    private final static byte MIDDLE_C_MIDI_ENCODING   = (byte) 60;
-    private final static byte MIDI_TONE_DOWN_CNAN_ZERO = (byte) 0x90;
+   
     private @Mock NoteListener noteListener;
 
     /**
@@ -99,7 +98,7 @@ public final class MidiMessageDecoderTest {
     @Test
     public void testDecodeAllTonesCToneOn() {
         for (int tone = 0; tone < 128; tone++) {
-            final byte[] m = new byte[]{MIDI_TONE_DOWN_CNAN_ZERO, (byte) tone, (byte) 60};
+            final byte[] m = new byte[]{ScaleAndChordGeneration.MIDI_TONE_DOWN_CNAN_ZERO, (byte) tone, (byte) 60};
             final long timestamp = 4711L;
             noteListener = mock(NoteListener.class);
             final MidiMessageDecoder instance = new MidiMessageDecoder(noteListener);
@@ -108,36 +107,7 @@ public final class MidiMessageDecoderTest {
         }
     }
 
-    /**
-     * Inject a midi sequence into a message decoder
-     *
-     * @param decoder
-     * @param sequence
-     */
-    private static void inject(
-            final MidiMessageDecoder decoder,
-            final byte[][] sequence) {
-        long timestamp = 0;
-        for (final byte[] signal : sequence) {
-            decoder.decode(signal, timestamp++);
-        }
-    }
-
-    /**
-     * From a vector of tones, generate a midi sequence of tones
-     *
-     * @param tones vector of tones.
-     * @return Vector of tone down events for channen zero, for the tones in the
-     * input vector.
-     */
-    private byte[][] midiToneDownSequenceForTones(byte[] tones) {
-        final byte[][] result = new byte[tones.length][];
-        final byte duration = (byte) 100;
-        for (int i = 0; i < tones.length; i++) {
-            result[i] = new byte[]{MIDI_TONE_DOWN_CNAN_ZERO, tones[i], duration};
-        }
-        return result;
-    }
+   
 
     /**
      * This is an exploratory test, when the exploration is done it probably
@@ -148,14 +118,14 @@ public final class MidiMessageDecoderTest {
         byte[][] cMajorChordArpeggiated =
                 // XXX Replae 60 withsome constant.
                 midiToneDownSequenceForTones(new byte[]{
-                    MIDDLE_C_MIDI_ENCODING,
-                    MIDDLE_C_MIDI_ENCODING + 4,
-                    MIDDLE_C_MIDI_ENCODING + 7});
+                    ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING,
+                    ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 4,
+                    ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 7});
 
         final MidiMessageDecoder instance = new MidiMessageDecoder(noteListener);
-        inject(instance, cMajorChordArpeggiated);
-        verify(noteListener).noteOn(MIDDLE_C_MIDI_ENCODING);
-        verify(noteListener).noteOn(MIDDLE_C_MIDI_ENCODING + 4);
-        verify(noteListener).noteOn(MIDDLE_C_MIDI_ENCODING + 7);
+        ScaleAndChordGeneration.inject(instance, cMajorChordArpeggiated);
+        verify(noteListener).noteOn(ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING);
+        verify(noteListener).noteOn(ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 4);
+        verify(noteListener).noteOn(ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 7);
     }
 }
