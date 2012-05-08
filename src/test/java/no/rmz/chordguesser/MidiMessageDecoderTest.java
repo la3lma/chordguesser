@@ -152,7 +152,6 @@ public final class MidiMessageDecoderTest {
                     MIDDLE_C_MIDI_ENCODING + 4,
                     MIDDLE_C_MIDI_ENCODING + 7});
 
-
         final MidiMessageDecoder instance = new MidiMessageDecoder(noteListener);
         inject(instance, cMajorChordArpeggiated);
         verify(noteListener).noteOn(MIDDLE_C_MIDI_ENCODING);

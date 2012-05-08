@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScaleCsvReader {
+public final class ScaleCsvReader {
 
     private final static String SCALE_CSV_RESOURCE_PATH = "/scaleCodingjan2011.csv";
     private final static int iAlternativeScaleNames_I = 0;
@@ -99,7 +99,7 @@ public class ScaleCsvReader {
 
     }
 
-    public List<ScaleBean> readScalesFromResourceCsv() throws FileNotFoundException, IOException {
+    public  List<ScaleBean> readScalesFromResourceCsv() throws FileNotFoundException, IOException {
 
         // XXX This is fairly inefficient parsing, but if more efficiency
         //     is needed, (that's not certain), hints can be found here:
