@@ -117,7 +117,7 @@ public final class MidiMessageDecoderTest {
     public void testCMajorChordDetection() {
         byte[][] cMajorChordArpeggiated =
                 // XXX Replae 60 withsome constant.
-                midiToneDownSequenceForTones(new byte[]{
+                ScaleAndChordGeneration.midiToneDownSequenceForTones(new byte[]{
                     ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING,
                     ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 4,
                     ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 7});
