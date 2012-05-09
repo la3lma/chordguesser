@@ -1,6 +1,5 @@
 package no.rmz.chordguesser;
 
-
 // XXX Presently this should only be used to get a bunch of representative
 //     midi events and have them printed out in a nice manner, then
 //     those events should be harvested into a proper set of unit tests
@@ -16,19 +15,19 @@ public class ChordGuesser {
         
         final PolyphonicState ps = new PolyphonicState();
         
-       final  NoteListener tl = new NoteListener() {
-
+        final NoteListener tl = new NoteListener() {
+            
             public void noteOff(int i) {
                 System.out.println("noteOff: " + i);
                 ps.noteOff(i);
             }
-
+            
             public void noteOn(int i) {
                 System.out.println("noteOn: " + i);
                 ps.noteOn(i);
             }
         };
-     
+        
         final MidiHandler mh = new MidiHandler(tl);
         
         mh.run();
