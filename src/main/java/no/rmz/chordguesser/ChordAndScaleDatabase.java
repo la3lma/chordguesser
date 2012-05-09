@@ -52,4 +52,8 @@ public final class ChordAndScaleDatabase {
             importScale(sb);
         }
     }
+
+    public Set<ScaleBean> getMatchingScales(BitVector cMajorBitvector) {
+        return scaledb.get(cMajorBitvector);
+    }
 }
