@@ -31,10 +31,13 @@ public class ChordAndScaleDatabaseTest {
     
     @Test
     public void testRecognizeCMajorArpeggiated() {
+        
         final BitVector cMajorBitvector = new BitVector("100010010000");
         final Set<ScaleBean> matchingScales = chordDb.getMatchingScales(cMajorBitvector);
         
         assert(!matchingScales.isEmpty());
-         
-    }
+        assertEquals(1, matchingScales.size());
+        final  ScaleBean cMajorChord = matchingScales.iterator().next();
+        assertEquals("Chord C Major", cMajorChord.getAlternativeScaleNames());
+      }
 }
