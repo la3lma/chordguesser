@@ -24,12 +24,12 @@ public class ChordAndScaleDatabaseTest {
      */
     @Test
     public void testPopulate() throws Exception {
+        // XXX This is no way to fix an off by one error!!!
         assertEquals(entries.size() -1 , chordDb.noOfScales());
     }
     
     @Test
     public void testRecognizeCMajorArpeggiated() {
          
-  
     }
 }
