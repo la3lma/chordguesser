@@ -35,4 +35,19 @@ public final  class ScaleAndChordGeneration {
         }
         return result;
     }
+    
+    
+    /**
+     * Return a midi sequence for channel zero representing a C major
+     * arpeggiated chord.
+     * @return 
+     */
+    public static byte [][] getCMajorChordArpeggiated() {
+        byte[][] cMajorChordArpeggiated =
+                ScaleAndChordGeneration.midiToneDownSequenceForTones(new byte[]{
+                    ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING,
+                    ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 4,
+                    ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 7});
+        return cMajorChordArpeggiated;
+    }
 }

@@ -107,6 +107,8 @@ public final class MidiMessageDecoderTest {
         }
     }
 
+    
+    
    
 
     /**
@@ -114,16 +116,9 @@ public final class MidiMessageDecoderTest {
      * doesn't even belong in this class.
      */
     @Test
-    public void testCMajorChordDetection() {
-        byte[][] cMajorChordArpeggiated =
-                // XXX Replae 60 withsome constant.
-                ScaleAndChordGeneration.midiToneDownSequenceForTones(new byte[]{
-                    ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING,
-                    ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 4,
-                    ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 7});
-
+    public void testCMajorChordThroughout() {
         final MidiMessageDecoder instance = new MidiMessageDecoder(noteListener);
-        ScaleAndChordGeneration.inject(instance, cMajorChordArpeggiated);
+        ScaleAndChordGeneration.inject(instance, ScaleAndChordGeneration.getCMajorChordArpeggiated());
         verify(noteListener).noteOn(ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING);
         verify(noteListener).noteOn(ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 4);
         verify(noteListener).noteOn(ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 7);
