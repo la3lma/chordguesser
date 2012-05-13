@@ -64,7 +64,7 @@ public final class MidiHandler {
                 System.out.println(infos[i].getDescription() + " Was Opened");
 
             } catch (MidiUnavailableException e) {
-                LOG.info("Couldn't connect with device ");
+                LOG.info("Couldn't connect with detected  device " + infos[i]);
             }
         }
     }
