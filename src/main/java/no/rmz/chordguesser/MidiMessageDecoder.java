@@ -4,7 +4,7 @@ public final class MidiMessageDecoder {
 
     private final static int NIBBLE_LENGTH_IN_BITS = 4;
 
-   
+
     public static byte getHighNibble(final byte a) {
         final byte nibble2 = (byte) ((0xF0 & a) / 16);
         return nibble2;
@@ -42,8 +42,8 @@ public final class MidiMessageDecoder {
     public static int getMidiChannelFromByte(final byte b) {
         return getLowNibble(b);
     }
-    
-    
+
+
     final NoteListener listener;
 
     MidiMessageDecoder(final NoteListener listener) {
@@ -53,15 +53,17 @@ public final class MidiMessageDecoder {
 
     void decode(final byte[] m, final long timestamp) {
         // XXX Just to see that we're alive. Remove asap.
-        System.out.printf("%02X%02X%02X%02X\n", m[0], m[1], m[2], (m.length == 4) ? m[3] : 0);
+        // System.out.printf("%02X%02X%02X%02X\n", m[0], m[1], m[2], (m.length == 4) ? m[3] : 0);
         final MidiCmd cmd = getCmdFromByte(m[0]);
         final int chan = getMidiChannelFromByte(m[0]);
-        if (cmd == MidiCmd.NOTE_ON) {
+        final int strength = m[2];
+        if (cmd == MidiCmd.NOTE_ON && strength != 0) {
             // XXX Fail is m has length < 2
             listener.noteOn(m[1]);
-        } else if (cmd == MidiCmd.NOTE_OFF) {
+        } else if ((cmd == MidiCmd.NOTE_OFF) ||
+                   ((cmd == MidiCmd.NOTE_ON)  && strength == 0)) {
             // XXX Fail is m has length < 2
-            listener.noteOn(m[1]);
+            listener.noteOff(m[1]);
         }
     }
 }

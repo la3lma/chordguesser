@@ -1,14 +1,17 @@
 package no.rmz.chordguesser;
 
-import java.util.List;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Transmitter;
 import javax.sound.midi.MidiUnavailableException;
 import static com.google.common.base.Preconditions.*;
+import java.util.List;
+import java.util.logging.Logger;
+import javax.sound.midi.*;
 
 public final class MidiHandler {
 
+    private final static Logger LOG = Logger.getLogger(MidiHandler.class.getName());
     private final NoteListener listener;
 
     public MidiHandler(final NoteListener listener) {
@@ -20,42 +23,48 @@ public final class MidiHandler {
 
         // Pick up a vector of info from the midi subsystem, then
         // iterate over all the info elements.
-        MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
+
+        final MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
         for (int i = 0; i < infos.length; i++) {
             try {
-
-
                 final MidiDevice device = MidiSystem.getMidiDevice(infos[i]);
                 final String description = device.getDeviceInfo().toString();
+                final Receiver receiver = new MidiInputReceiver(description, listener);
 
-
+                // XXX This is cargo cult programming, and it doesn't work!
                 //does the device have any transmitters?
                 //if it does, add it to the device list
-                System.out.println(infos[i]);
-
-                //get all transmitters
+                final MidiDevice.Info info = infos[i];
+                System.out.println("i = " + i
+                        + ", Processing: " + info.getDescription()
+                        + ", name = " + info.getName()
+                        + ", vendor " + info.getVendor()
+                        + ", version " + info.getVersion());
+                System.out.flush();
                 final List<Transmitter> transmitters = device.getTransmitters();
-                //and for each transmitter
+                final List<Receiver> receivers = device.getReceivers();
 
-                for (int j = 0; j < transmitters.size(); j++) {
+                for (final Transmitter transmitter : transmitters) {
                     //create a new receiver
-                    transmitters.get(j).setReceiver(
-                            //using my own MidiInputReceiver
-                            new MidiInputReceiver(description, listener));
+                    transmitter.setReceiver(receiver);
                 }
 
                 final Transmitter trans = device.getTransmitter();
-                trans.setReceiver(new MidiInputReceiver(description, listener));
+                int maxTransmitters = device.getMaxTransmitters();
+                if ((maxTransmitters > transmitters.size()) || maxTransmitters == -1) {
+                    if (trans.getReceiver() != receiver) {
+                        trans.setReceiver(receiver);
+                        device.open();
+                    }
+                }
 
-                //open each device
-                device.open();
+
                 //if code gets this far without throwing an exception
                 //print a success message
-                System.out.println(device.getDeviceInfo() + " Was Opened");
-
+                System.out.println(infos[i].getDescription() + " Was Opened");
 
             } catch (MidiUnavailableException e) {
-                throw new RuntimeException(e);
+                LOG.info("Couldn't connect with device ");
             }
         }
     }
