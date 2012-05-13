@@ -3,54 +3,44 @@ package no.rmz.chordguesser;
 import java.util.Arrays;
 
 /**
- * Perhaps it is a clever idea to use bitvectors to
- * hold chord states? If so it's nice to have a class
- * to encapsulate them.
+ * Perhaps it is a clever idea to use bitvectors to hold chord states? If so
+ * it's nice to have a class to encapsulate them.
  */
-public final class BitVector implements Comparable<BitVector>{
+public final class BitVector implements Comparable<BitVector> {
 
     /**
-     * Everyone use eight bit bytes these days,
-     * but imagine that once that was a configurable number
-     * on decent architectures.  Ah, those where the days.
-     * In remenisance of those days I declare the right
-     * to hage 64 bit bytes coded as longs :-)
+     * Everyone use eight bit bytes these days, but imagine that once that was a
+     * configurable number on decent architectures. Ah, those where the days. In
+     * remenisance of those days I declare the right to hage 64 bit bytes coded
+     * as longs :-)
      */
-    private static final  int NO_OF_BITS_IN_A_BYTE = 64;
-
-
-
+    private static final int NO_OF_BITS_IN_A_BYTE = 64;
     /**
      * The number of bits.
      */
-    private final int     lengthInBits;
-
+    private final int lengthInBits;
     /**
      * The number of bytes.
      */
-    private final int     lengthInBytes;
-
+    private final int lengthInBytes;
     /**
-     * The eight-bit bytes that holds the bits.
-     * Non-set bits are all zero.
+     * The eight-bit bytes that holds the bits. Non-set bits are all zero.
      */
-    private final long [] bytes;
-
-
+    private final long[] bytes;
 
     /**
-     * Throw an IllegalArgumentException if the
-     * parameter is not a valid index into a bit.
+     * Throw an IllegalArgumentException if the parameter is not a valid index
+     * into a bit.
+     *
      * @param bit
      */
-    private  void checkArg(final int bit) {
+    private void checkArg(final int bit) {
         if (bit < 0) {
             throw new IllegalArgumentException("Index less than zero");
         } else if (bit >= lengthInBits) {
             throw new IllegalArgumentException("Index larger than  length (" + lengthInBits + ")");
         }
     }
-
 
     /**
      * Create a bit vector that is initialized by the bits described in the
@@ -63,20 +53,19 @@ public final class BitVector implements Comparable<BitVector>{
         setFromString(initializingString);
     }
 
-
     /**
-     * Create a bitvector with a length specified as number of
-     * significant bits.  The bits are addressed in the range
-     * 0 .. (lengthInBits-1)
+     * Create a bitvector with a length specified as number of significant bits.
+     * The bits are addressed in the range 0 .. (lengthInBits-1)
+     *
      * @param noOfBits
      */
     public BitVector(final int noOfBits) {
         if (noOfBits < 1) {
             throw new IllegalArgumentException("No of bits less than one");
         }
-        this.lengthInBits  = noOfBits;
+        this.lengthInBits = noOfBits;
         this.lengthInBytes = (noOfBits / NO_OF_BITS_IN_A_BYTE) + 1;
-        this.bytes         = new long[lengthInBytes];
+        this.bytes = new long[lengthInBytes];
     }
 
     /**
@@ -103,7 +92,7 @@ public final class BitVector implements Comparable<BitVector>{
         bytes[by] = (long) (bytes[by] & ~(1 << bi));
     }
 
-      /**
+    /**
      * Set the bit no "bit" to 0.
      *
      * @param bit the bit to clear.
@@ -116,12 +105,11 @@ public final class BitVector implements Comparable<BitVector>{
     }
 
     /**
-     * The bit-vector can be set to a bitpattern specified
-     * by a string, where the string "010" translates to
-     * a bitvector "010" where the leftmotst bit is the
-     * bit with index zero. The input string must contain
-     * only zeros and ones or an IllegalArgumentException will
-     * be thrown.
+     * The bit-vector can be set to a bitpattern specified by a string, where
+     * the string "010" translates to a bitvector "010" where the leftmotst bit
+     * is the bit with index zero. The input string must contain only zeros and
+     * ones or an IllegalArgumentException will be thrown.
+     *
      * @param bitString
      */
     public void setFromString(final String bitString) {
@@ -173,39 +161,45 @@ public final class BitVector implements Comparable<BitVector>{
         return hash;
     }
 
-
-
-
-     /**
-     * Combine the results of op1 and op2 into result.
-     * All the four operators must be of equal length for this
-     * operation to succeed.
+    /**
+     * Combine the results of op1 and op2 into result. All the four operators
+     * must be of equal length for this operation to succeed.
      */
     static void and(final BitVector result, final BitVector op1, final BitVector op2) {
         if (result.lengthInBits != op1.lengthInBits || result.lengthInBits != op2.lengthInBits) {
             throw new IllegalArgumentException("both operands and the result must have the same number of bits");
         }
 
-        for (int i = 0; i < result.lengthInBytes ; i++) {
-            result.bytes[i] = (long) ((long)op1.bytes[i] & (long)op2.bytes[i]);
+        for (int i = 0; i < result.lengthInBytes; i++) {
+            result.bytes[i] = (long) ((long) op1.bytes[i] & (long) op2.bytes[i]);
         }
     }
 
     @Override
     public int compareTo(final BitVector other) {
-        if (lengthInBits!= lengthInBits) {
+        if (lengthInBits != lengthInBits) {
             throw new IllegalArgumentException("Attempt to compare bit vectors of different lengths");
         }
 
-        for (int i = 0 ; i < lengthInBytes ; i++) {
-            final long  a =  bytes[i];
-            final long  b =  other.bytes[i];
+        for (int i = 0; i < lengthInBytes; i++) {
+            final long a = bytes[i];
+            final long b = other.bytes[i];
             if (a < b) {
                 return -1;
-            } else if (a >b) {
+            } else if (a > b) {
                 return 1;
             }
         }
         return 0;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("BitVector = ");
+        for (int i = 0; i < lengthInBits; i++) {
+            sb.append(read(i) ? "1" : "0");
+        }
+
+        return sb.toString();
     }
 }
