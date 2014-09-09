@@ -58,7 +58,6 @@ public final class MidiHandler {
                     }
                 }
 
-
                 //if code gets this far without throwing an exception
                 //print a success message
                 System.out.println(infos[i].getDescription() + " Was Opened");
