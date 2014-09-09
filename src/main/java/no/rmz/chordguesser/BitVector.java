@@ -96,6 +96,7 @@ public final class BitVector implements Comparable<BitVector> {
      * Set the bit no "bit" to 0.
      *
      * @param bit the bit to clear.
+     * @return The value of bit no "bit", I think
      */
     public boolean read(final int bit) {
         checkArg(bit);
@@ -146,10 +147,7 @@ public final class BitVector implements Comparable<BitVector> {
         if (this.lengthInBytes != other.lengthInBytes) {
             return false;
         }
-        if (!Arrays.equals(this.bytes, other.bytes)) {
-            return false;
-        }
-        return true;
+        return Arrays.equals(this.bytes, other.bytes);
     }
 
     @Override
