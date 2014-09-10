@@ -1,199 +1,199 @@
 package no.rmz.chordguesser;
 
 public final class ScaleBean {
-    protected String AlternativeScaleNames;
-    protected String AscendingNotePositionsinScale;
-    protected String AugTriads;
-    protected String Binary12notes;
-    protected String Composer;
-    protected String ContiguousNotes;
-    protected String DimTriads;
-    protected String DissonanceIndex;
-    protected String FlatmostNote;
-    protected String LandsIntervalSequence;
-    protected String LengthOfChain;
-    protected String MajorTriadsMinorTriads;
-    protected String NameOfScale;
-    protected String NoOfMissingNotesinChain;
-    protected String NoteNamesfromC;
-    protected String NotesInStepsOfFifths;
-    protected String NumberOfNotesInScale;
-    protected String NumberOfIntervals;
-    protected String PitchSetbinary;
-    protected String PitchSetNotation12edo;
-    protected String PositionOfTonic;
-    protected String ReferenceUrl;
-    protected String ScaleCodingSharpmostNote;
-    protected String TotalStepsBetweenAllIntervals;
-    protected String TuningTablefromTonicA;
-    protected String TuningTablefromTonicAb;
-    protected String TuningTablefromTonicB;
-    protected String TuningTablefromTonicBb;
-    protected String TuningTablefromTonicC;
-    protected String TuningTablefromTonicCSharp;
-    protected String TuningTablefromTonicD;
-    protected String TuningTablefromTonicE;
-    protected String TuningTablefromTonicEb;
-    protected String TuningTablefromTonicF;
-    protected String TuningTablefromTonicFSharp;
-    protected String TuningTablefromTonicG;
-    protected String TuningTablefromTonicGSharp;
-    protected String WorkExample;
+    protected String alternativeScaleNames;
+    protected String ascendingNotePositionsinScale;
+    protected String augTriads;
+    protected String binary12notes;
+    protected String composer;
+    protected String contiguousNotes;
+    protected String dimTriads;
+    protected String dissonanceIndex;
+    protected String flatmostNote;
+    protected String landsIntervalSequence;
+    protected String lengthOfChain;
+    protected String majorTriadsMinorTriads;
+    protected String nameOfScale;
+    protected String noOfMissingNotesinChain;
+    protected String noteNamesfromC;
+    protected String notesInStepsOfFifths;
+    protected String numberOfNotesInScale;
+    protected String numberOfIntervals;
+    protected String pitchSetbinary;
+    protected String pitchSetNotation12edo;
+    protected String positionOfTonic;
+    protected String referenceUrl;
+    protected String scaleCodingSharpmostNote;
+    protected String totalStepsBetweenAllIntervals;
+    protected String tuningTablefromTonicA;
+    protected String tuningTablefromTonicAb;
+    protected String tuningTablefromTonicB;
+    protected String tuningTablefromTonicBb;
+    protected String tuningTablefromTonicC;
+    protected String tuningTablefromTonicCSharp;
+    protected String tuningTablefromTonicD;
+    protected String tuningTablefromTonicE;
+    protected String tuningTablefromTonicEb;
+    protected String tuningTablefromTonicF;
+    protected String tuningTablefromTonicFSharp;
+    protected String tuningTablefromTonicG;
+    protected String tuningTablefromTonicGSharp;
+    protected String workExample;
 
     public String getAlternativeScaleNames() {
-        return AlternativeScaleNames;
+        return alternativeScaleNames;
     }
 
     public String getAscendingNotePositionsinScale() {
-        return AscendingNotePositionsinScale;
+        return ascendingNotePositionsinScale;
     }
 
     public String getAugTriads() {
-        return AugTriads;
+        return augTriads;
     }
 
     public String getBinary12notes() {
-        return Binary12notes;
+        return binary12notes;
     }
 
     public String getComposer() {
-        return Composer;
+        return composer;
     }
 
     public String getContiguousNotes() {
-        return ContiguousNotes;
+        return contiguousNotes;
     }
 
     public String getDimTriads() {
-        return DimTriads;
+        return dimTriads;
     }
 
     public String getDissonanceIndex() {
-        return DissonanceIndex;
+        return dissonanceIndex;
     }
 
     public String getFlatmostNote() {
-        return FlatmostNote;
+        return flatmostNote;
     }
 
     public String getLandsIntervalSequence() {
-        return LandsIntervalSequence;
+        return landsIntervalSequence;
     }
 
     public String getLengthOfChain() {
-        return LengthOfChain;
+        return lengthOfChain;
     }
 
     public String getMajorTriadsMinorTriads() {
-        return MajorTriadsMinorTriads;
+        return majorTriadsMinorTriads;
     }
 
     public String getNameOfScale() {
-        return NameOfScale;
+        return nameOfScale;
     }
 
     public String getNoOfMissingNotesinChain() {
-        return NoOfMissingNotesinChain;
+        return noOfMissingNotesinChain;
     }
 
     public String getNoteNamesfromC() {
-        return NoteNamesfromC;
+        return noteNamesfromC;
     }
 
     public String getNotesInStepsOfFifths() {
-        return NotesInStepsOfFifths;
+        return notesInStepsOfFifths;
     }
 
     public String getNumberOfIntervals() {
-        return NumberOfIntervals;
+        return numberOfIntervals;
     }
 
     public String getNumberOfNotesInScale() {
-        return NumberOfNotesInScale;
+        return numberOfNotesInScale;
     }
 
     public String getPitchSetNotation12edo() {
-        return PitchSetNotation12edo;
+        return pitchSetNotation12edo;
     }
 
     public String getPitchSetbinary() {
-        return PitchSetbinary;
+        return pitchSetbinary;
     }
 
     public String getPositionOfTonic() {
-        return PositionOfTonic;
+        return positionOfTonic;
     }
 
     public String getReferenceUrl() {
-        return ReferenceUrl;
+        return referenceUrl;
     }
 
     public String getScaleCodingSharpmostNote() {
-        return ScaleCodingSharpmostNote;
+        return scaleCodingSharpmostNote;
     }
 
     public String getTotalStepsBetweenAllIntervals() {
-        return TotalStepsBetweenAllIntervals;
+        return totalStepsBetweenAllIntervals;
     }
 
     public String getTuningTablefromTonicA() {
-        return TuningTablefromTonicA;
+        return tuningTablefromTonicA;
     }
 
     public String getTuningTablefromTonicAb() {
-        return TuningTablefromTonicAb;
+        return tuningTablefromTonicAb;
     }
 
     public String getTuningTablefromTonicB() {
-        return TuningTablefromTonicB;
+        return tuningTablefromTonicB;
     }
 
     public String getTuningTablefromTonicBb() {
-        return TuningTablefromTonicBb;
+        return tuningTablefromTonicBb;
     }
 
     public String getTuningTablefromTonicC() {
-        return TuningTablefromTonicC;
+        return tuningTablefromTonicC;
     }
 
     public String getTuningTablefromTonicCSharp() {
-        return TuningTablefromTonicCSharp;
+        return tuningTablefromTonicCSharp;
     }
 
     public String getTuningTablefromTonicD() {
-        return TuningTablefromTonicD;
+        return tuningTablefromTonicD;
     }
 
     public String getTuningTablefromTonicE() {
-        return TuningTablefromTonicE;
+        return tuningTablefromTonicE;
     }
 
     public String getTuningTablefromTonicEb() {
-        return TuningTablefromTonicEb;
+        return tuningTablefromTonicEb;
     }
 
     public String getTuningTablefromTonicF() {
-        return TuningTablefromTonicF;
+        return tuningTablefromTonicF;
     }
 
     public String getTuningTablefromTonicFSharp() {
-        return TuningTablefromTonicFSharp;
+        return tuningTablefromTonicFSharp;
     }
 
     public String getTuningTablefromTonicG() {
-        return TuningTablefromTonicG;
+        return tuningTablefromTonicG;
     }
 
     public String getTuningTablefromTonicGSharp() {
-        return TuningTablefromTonicGSharp;
+        return tuningTablefromTonicGSharp;
     }
 
     public String getWorkExample() {
-        return WorkExample;
+        return workExample;
     }
 
     @Override
     public String toString() {
-        return "ScaleBean{" + "AlternativeScaleNames=" + AlternativeScaleNames + ", AscendingNotePositionsinScale=" + AscendingNotePositionsinScale + ", AugTriads=" + AugTriads + ", Binary12notes=" + Binary12notes + ", Composer=" + Composer + ", ContiguousNotes=" + ContiguousNotes + ", DimTriads=" + DimTriads + ", DissonanceIndex=" + DissonanceIndex + ", FlatmostNote=" + FlatmostNote + ", LandsIntervalSequence=" + LandsIntervalSequence + ", LengthOfChain=" + LengthOfChain + ", MajorTriadsMinorTriads=" + MajorTriadsMinorTriads + ", NameOfScale=" + NameOfScale + ", NoOfMissingNotesinChain=" + NoOfMissingNotesinChain + ", NoteNamesfromC=" + NoteNamesfromC + ", NotesInStepsOfFifths=" + NotesInStepsOfFifths + ", NumberOfNotesInScale=" + NumberOfNotesInScale + ", NumberOfIntervals=" + NumberOfIntervals + ", PitchSetbinary=" + PitchSetbinary + ", PitchSetNotation12edo=" + PitchSetNotation12edo + ", PositionOfTonic=" + PositionOfTonic + ", ReferenceUrl=" + ReferenceUrl + ", ScaleCodingSharpmostNote=" + ScaleCodingSharpmostNote + ", TotalStepsBetweenAllIntervals=" + TotalStepsBetweenAllIntervals + ", TuningTablefromTonicA=" + TuningTablefromTonicA + ", TuningTablefromTonicAb=" + TuningTablefromTonicAb + ", TuningTablefromTonicB=" + TuningTablefromTonicB + ", TuningTablefromTonicBb=" + TuningTablefromTonicBb + ", TuningTablefromTonicC=" + TuningTablefromTonicC + ", TuningTablefromTonicCSharp=" + TuningTablefromTonicCSharp + ", TuningTablefromTonicD=" + TuningTablefromTonicD + ", TuningTablefromTonicE=" + TuningTablefromTonicE + ", TuningTablefromTonicEb=" + TuningTablefromTonicEb + ", TuningTablefromTonicF=" + TuningTablefromTonicF + ", TuningTablefromTonicFSharp=" + TuningTablefromTonicFSharp + ", TuningTablefromTonicG=" + TuningTablefromTonicG + ", TuningTablefromTonicGSharp=" + TuningTablefromTonicGSharp + ", WorkExample=" + WorkExample + '}';
+        return "ScaleBean{" + "AlternativeScaleNames=" + alternativeScaleNames + ", AscendingNotePositionsinScale=" + ascendingNotePositionsinScale + ", AugTriads=" + augTriads + ", Binary12notes=" + binary12notes + ", Composer=" + composer + ", ContiguousNotes=" + contiguousNotes + ", DimTriads=" + dimTriads + ", DissonanceIndex=" + dissonanceIndex + ", FlatmostNote=" + flatmostNote + ", LandsIntervalSequence=" + landsIntervalSequence + ", LengthOfChain=" + lengthOfChain + ", MajorTriadsMinorTriads=" + majorTriadsMinorTriads + ", NameOfScale=" + nameOfScale + ", NoOfMissingNotesinChain=" + noOfMissingNotesinChain + ", NoteNamesfromC=" + noteNamesfromC + ", NotesInStepsOfFifths=" + notesInStepsOfFifths + ", NumberOfNotesInScale=" + numberOfNotesInScale + ", NumberOfIntervals=" + numberOfIntervals + ", PitchSetbinary=" + pitchSetbinary + ", PitchSetNotation12edo=" + pitchSetNotation12edo + ", PositionOfTonic=" + positionOfTonic + ", ReferenceUrl=" + referenceUrl + ", ScaleCodingSharpmostNote=" + scaleCodingSharpmostNote + ", TotalStepsBetweenAllIntervals=" + totalStepsBetweenAllIntervals + ", TuningTablefromTonicA=" + tuningTablefromTonicA + ", TuningTablefromTonicAb=" + tuningTablefromTonicAb + ", TuningTablefromTonicB=" + tuningTablefromTonicB + ", TuningTablefromTonicBb=" + tuningTablefromTonicBb + ", TuningTablefromTonicC=" + tuningTablefromTonicC + ", TuningTablefromTonicCSharp=" + tuningTablefromTonicCSharp + ", TuningTablefromTonicD=" + tuningTablefromTonicD + ", TuningTablefromTonicE=" + tuningTablefromTonicE + ", TuningTablefromTonicEb=" + tuningTablefromTonicEb + ", TuningTablefromTonicF=" + tuningTablefromTonicF + ", TuningTablefromTonicFSharp=" + tuningTablefromTonicFSharp + ", TuningTablefromTonicG=" + tuningTablefromTonicG + ", TuningTablefromTonicGSharp=" + tuningTablefromTonicGSharp + ", WorkExample=" + workExample + '}';
     }
 }
