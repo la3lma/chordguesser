@@ -150,6 +150,7 @@ public final class BitVector implements Comparable<BitVector> {
         return Arrays.equals(this.bytes, other.bytes);
     }
 
+    // XXX  Use guava hash instead
     @Override
     public int hashCode() {
         int hash = 7;
