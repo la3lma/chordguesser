@@ -4,9 +4,12 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Transmitter;
 import javax.sound.midi.MidiUnavailableException;
+
 import static com.google.common.base.Preconditions.*;
+
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.logging.*;
+
 import javax.sound.midi.*;
 
 public final class MidiHandler {
@@ -44,10 +47,9 @@ public final class MidiHandler {
                 final List<Transmitter> transmitters = device.getTransmitters();
                 final List<Receiver> receivers = device.getReceivers();
 
-                for (final Transmitter transmitter : transmitters) {
-                    //create a new receiver
+                transmitters.stream().forEach((transmitter) -> {
                     transmitter.setReceiver(receiver);
-                }
+                });
 
                 final Transmitter trans = device.getTransmitter();
                 int maxTransmitters = device.getMaxTransmitters();
@@ -63,7 +65,7 @@ public final class MidiHandler {
                 System.out.println(infos[i].getDescription() + " Was Opened");
 
             } catch (MidiUnavailableException e) {
-                LOG.info("Couldn't connect with detected  device " + infos[i]);
+                LOG.log(Level.INFO, "Couldn''t connect with detected  device {0}", infos[i]);
             }
         }
     }

@@ -1,4 +1,3 @@
-
 package no.rmz.chordguesser;
 
 /**
@@ -8,8 +7,15 @@ package no.rmz.chordguesser;
  */
 public interface NoteListener {
 
+    /**
+     * Midi note no 'i' is keyed down.
+     * @param i the midi note
+     */
     void noteOff(int i);
 
+    /**
+     * Midi note no 'i' is keyed off.
+     * @param i the midi note
+     */
     void noteOn(int i);
-
 }

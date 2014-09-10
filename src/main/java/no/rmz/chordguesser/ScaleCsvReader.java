@@ -113,14 +113,16 @@ public final class ScaleCsvReader {
 
         final CSVReader chords = new CSVReader(inputStreamReader);
         final List<String[]> allChordsAsArrays = chords.readAll();
-        
-        
-        final List<ScaleBean> result = new ArrayList<ScaleBean>(allChordsAsArrays.size() - 1);
-        for (final String[] v : allChordsAsArrays.subList(1, allChordsAsArrays.size())) {
+
+
+        final List<ScaleBean> result = new ArrayList<>(allChordsAsArrays.size() - 1);
+        allChordsAsArrays.subList(1, allChordsAsArrays.size()).stream().map((v) -> {
             final ScaleBean b = new ScaleBean();
             assign(b, v);
+            return b;
+        }).forEach((b) -> {
             result.add(b);
-        }
+        });
         return result;
     }
 }

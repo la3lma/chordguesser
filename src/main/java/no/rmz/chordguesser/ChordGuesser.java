@@ -37,6 +37,7 @@ public final class ChordGuesser {
             this.db = db;
         }
 
+        @Override
         public void noteOff(int i) {
             synchronized (monitor) {
                 final int scaleTone = i % 12;
@@ -47,6 +48,7 @@ public final class ChordGuesser {
             }
         }
 
+        @Override
         public void noteOn(int i) {
             synchronized (monitor) {
                 final int scaleTone = i % 12;
@@ -60,11 +62,11 @@ public final class ChordGuesser {
         private void reportScales() {
             System.out.println(bv.toString());
             final Set<ScaleBean> matchingScales = db.getMatchingScales(bv);
-            for (final ScaleBean sb : matchingScales) {
+            matchingScales.stream().forEach((sb) -> {
                 System.out.format("   %s (%s)",
                         sb.getNameOfScale(),
                         sb.getAlternativeScaleNames());
-            }
+            });
         }
     }
 
@@ -76,6 +78,7 @@ public final class ChordGuesser {
 
     /**
      * @param args the command line arguments
+     * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
         new ChordGuesser().run();

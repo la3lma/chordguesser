@@ -9,10 +9,25 @@ package no.rmz.chordguesser;
  */
 public final class PolyphonicState implements NoteListener {
 
+    /**
+     * Maximum number of midi notes we can listen to.
+     */
     private final static int MAX_NO_OF_MIDI_NOTES = 128;
-    private final BitVector stateVector = new BitVector(MAX_NO_OF_MIDI_NOTES);
+
+    /**
+     * The state representation. The bit 'i' is on if and only if the note 'i'
+     * is keyed.
+     */
+    private final BitVector stateVector;
 
     public PolyphonicState() {
+        stateVector = new BitVector(MAX_NO_OF_MIDI_NOTES);
+    }
+
+    private void checkArg(int i) {
+        if (i < 0 || i >= MAX_NO_OF_MIDI_NOTES) {
+            throw new IllegalArgumentException("Illegal MIDI note: " + i);
+        }
     }
 
     @Override
@@ -25,11 +40,5 @@ public final class PolyphonicState implements NoteListener {
     public void noteOff(int i) {
         checkArg(i);
         stateVector.unset(i);
-    }
-
-    private void checkArg(int i) {
-        if (i < 0 || i >= MAX_NO_OF_MIDI_NOTES) {
-            throw new IllegalArgumentException("Illegal MIDI note: " + i);
-        }
     }
 }
