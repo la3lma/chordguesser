@@ -1,5 +1,6 @@
 package no.rmz.chordguesser.midi;
 
+import no.rmz.sequencer.HackedUpSequencer;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Transmitter;
@@ -44,9 +45,20 @@ public final class MidiHandler {
                         + ", name = " + info.getName()
                         + ", vendor " + info.getVendor()
                         + ", version " + info.getVersion());
+
+                // XXX Awful hack
+                if ("javaSequencer Bus 1".equals(info.getDescription())) {
+                    System.out.println("--->Now looking at javaSequencer bus1");
+                    if (device.getMaxReceivers() > 0) {
+                        System.out.println("Found receivers in  bus1");
+                        HackedUpSequencer.startSequencer(device);
+                    } else {
+                        System.out.println("Found no receivers in bus1");
+                    }
+                }
+
                 System.out.flush();
                 final List<Transmitter> transmitters = device.getTransmitters();
-                final List<Receiver> receivers = device.getReceivers();
 
                 transmitters.stream().forEach((transmitter) -> {
                     transmitter.setReceiver(receiver);
@@ -72,4 +84,7 @@ public final class MidiHandler {
             }
         }
     }
+
+    
+
 }
