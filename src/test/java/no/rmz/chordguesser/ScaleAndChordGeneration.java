@@ -1,5 +1,7 @@
 package no.rmz.chordguesser;
 
+import no.rmz.chordguesser.midi.MidiMessageDecoder;
+
 public final  class ScaleAndChordGeneration {
     
     public final static byte MIDDLE_C_MIDI_ENCODING   = (byte) 60;

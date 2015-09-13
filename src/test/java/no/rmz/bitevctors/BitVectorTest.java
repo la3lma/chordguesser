@@ -1,5 +1,6 @@
-package no.rmz.chordguesser;
+package no.rmz.bitevctors;
 
+import no.rmz.bitvectors.BitVector;
 import org.junit.*;
 import static org.junit.Assert.*;
 

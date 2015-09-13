@@ -1,4 +1,4 @@
-package no.rmz.chordguesser;
+package no.rmz.chordguesser.midi;
 
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.*;
 
 import javax.sound.midi.*;
+import no.rmz.chordguesser.NoteListener;
 
 public final class MidiHandler {
 
@@ -53,7 +54,8 @@ public final class MidiHandler {
 
                 final Transmitter trans = device.getTransmitter();
                 int maxTransmitters = device.getMaxTransmitters();
-                if ((maxTransmitters > transmitters.size()) || maxTransmitters == -1) {
+                if ((maxTransmitters > transmitters.size())
+                    || maxTransmitters == -1) {
                     if (trans.getReceiver() != receiver) {
                         trans.setReceiver(receiver);
                         device.open();
@@ -65,7 +67,8 @@ public final class MidiHandler {
                 System.out.println(infos[i].getDescription() + " Was Opened");
 
             } catch (MidiUnavailableException e) {
-                LOG.log(Level.INFO, "Couldn''t connect with detected  device {0}", infos[i]);
+                LOG.log(Level.INFO,
+                        "Couldn''t connect with detected  device {0}", infos[i]);
             }
         }
     }

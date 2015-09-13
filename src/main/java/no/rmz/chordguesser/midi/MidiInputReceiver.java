@@ -1,7 +1,8 @@
-package no.rmz.chordguesser;
+package no.rmz.chordguesser.midi;
 
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.Receiver;
+import no.rmz.chordguesser.NoteListener;
 
 /**
  *

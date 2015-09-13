@@ -1,17 +1,19 @@
-package no.rmz.chordguesser;
+package no.rmz.scales;
 
+import no.rmz.bitvectors.BitVector;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *  A very database of chords and scales. Fully in-memory
+ *  A very simple database of chords and scales. Fully in-memory
  *  and indexed only as much as has been necessary
  *  to get halfway decent performance.
  */
 public final class ChordAndScaleDatabase {
 
-    private final static Logger LOG = Logger.getLogger(ChordAndScaleDatabase.class.getName());
+    private final static Logger LOG =
+            Logger.getLogger(ChordAndScaleDatabase.class.getName());
 
     private final Map<BitVector, Set<ScaleBean>> scaledb;
 

@@ -1,4 +1,7 @@
-package no.rmz.chordguesser;
+package no.rmz.chordguesser.midi;
+
+import no.rmz.chordguesser.NoteListener;
+import no.rmz.chordguesser.midi.MidiCmd;
 
 public final class MidiMessageDecoder {
 
@@ -46,12 +49,12 @@ public final class MidiMessageDecoder {
 
     final NoteListener listener;
 
-    MidiMessageDecoder(final NoteListener listener) {
+    public MidiMessageDecoder(final NoteListener listener) {
         // XXX Null check missing!
         this.listener = listener;
     }
 
-    void decode(final byte[] m, final long timestamp) {
+    public void decode(final byte[] m, final long timestamp) {
         // XXX Just to see that we're alive. Remove asap.
         // System.out.printf("%02X%02X%02X%02X\n", m[0], m[1], m[2], (m.length == 4) ? m[3] : 0);
         final MidiCmd cmd = getCmdFromByte(m[0]);

@@ -1,5 +1,10 @@
 package no.rmz.chordguesser;
 
+import no.rmz.scales.ScaleCsvReader;
+import no.rmz.scales.ScaleBean;
+import no.rmz.scales.ChordAndScaleDatabase;
+import no.rmz.bitvectors.BitVector;
+import no.rmz.chordguesser.midi.MidiHandler;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;

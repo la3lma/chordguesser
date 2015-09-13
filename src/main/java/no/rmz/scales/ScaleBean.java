@@ -1,4 +1,4 @@
-package no.rmz.chordguesser;
+package no.rmz.scales;
 
 public final class ScaleBean {
     protected String alternativeScaleNames;

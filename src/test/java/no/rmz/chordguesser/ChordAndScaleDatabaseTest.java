@@ -1,5 +1,9 @@
 package no.rmz.chordguesser;
 
+import no.rmz.scales.ScaleCsvReader;
+import no.rmz.scales.ScaleBean;
+import no.rmz.scales.ChordAndScaleDatabase;
+import no.rmz.bitvectors.BitVector;
 import java.util.List;
 import java.util.Set;
 import org.junit.*;
