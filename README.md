@@ -1,6 +1,27 @@
 chordguesser
 ============
 
+This probgram started out as a little utility to listen in on midi sequences to guess chords,
+but has since been abandoned, then repurposed to send midi sequences to external synths, and
+is now in a state of disarray.
+
+Got some love from stackoverflow.com to fix a troublesome issue
+
+    http://stackoverflow.com/questions/32591280/how-to-send-midi-from-a-java-program-to-an-iac-bus-on-osx?stw=2
+
+... it turned out that I had just forgotten to RTFM, and consequently not
+called open() on the IAC device.   
+
+That fix opens a bunch of doors that I have been planning to walk through,
+and I hope I will no be able to do so.  
+
+Until I do this program will stay in a state of disarray, but when i'm done
+it will be much better :-))
+
+
+# The original comments for this program
+
+
 A little utility that will (eventually) listen to MIDI sources and guess which chords are being played.
 
 update:  The chordguesser thingy never did exactly what I wanted it to.  Some bugs I never had time
