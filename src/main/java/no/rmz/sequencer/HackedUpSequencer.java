@@ -45,6 +45,7 @@ public class HackedUpSequencer {
         List<Receiver> receivers = device.getReceivers();
         List<Transmitter> transmitters = device.getTransmitters();
         try {
+            device.open();
             this.rcvr = device.getReceiver();
         } catch (MidiUnavailableException ex) {
             throw new IllegalStateException(name + " MIDI receiver unavailable", ex);
