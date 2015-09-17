@@ -1,7 +1,6 @@
 package no.rmz.sequencer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -10,11 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
-import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Transmitter;
 
@@ -49,29 +45,6 @@ public class HackedUpSequencer {
             throw new IllegalStateException(name + " MIDI receiver unavailable", ex);
         }
 
-        if (noOfTransmitters != 0){
-            try {
-                this.receiver = new Receiver() {
-
-                    @Override
-                    public void send(MidiMessage message, long timeStamp) {
-                       System.out.println("   -> " + name + " received " + message.toString());
-                    }
-
-                    @Override
-                    public void close() {
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
-                };
-                System.out.println(" ==> Adding a receiver for " + name);
-                this.xmit = device.getTransmitter();
-                this.xmit.setReceiver(this.receiver);
-            } catch (MidiUnavailableException ex) {
-                 throw new IllegalStateException(name + " MIDI transmitter unavailable", ex);
-            }
-        } else {
-            this.xmit = null;
-        }
         this.myMsg = new ShortMessage();
 
         try {

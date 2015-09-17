@@ -1,4 +1,4 @@
-package no.rmz.sequencer;
+package no.rmz.experiments;
 
 import org.jfugue.player.Player;
 import org.jfugue.theory.ChordProgression;
