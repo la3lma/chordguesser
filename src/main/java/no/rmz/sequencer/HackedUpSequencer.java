@@ -106,35 +106,6 @@ public class HackedUpSequencer {
             // Fire up a thread and make it output something.
             hackedUpSequencer.start();
 
-            try {
-
-                Sequencer sequencer =
-                // Get default sequencer.
-
-                sequencer = MidiSystem.getSequencer();
-
-                if (sequencer == null) {
-                     // Error -- sequencer device is not supported.
-                    // Inform user and return...
-                    throw new RuntimeException("Device not supported");
-                } else {
-                    // Acquire resources and make operational.
-                    sequencer.open();
-                }
-
-                File myMidiFile = new File(MIDIFILENAME);
-                // Construct a Sequence object, and
-                // load it into my sequencer.
-                Sequence mySeq = MidiSystem.getSequence(myMidiFile);
-                sequencer.setSequence(mySeq);
-                sequencer.getTransmitter().setReceiver(device.getReceiver());
-               //  sequencer.start();  // XXX This is a really horrible song :-)
-            } catch (Exception e) {
-                // Handle error and/or return
-                throw new RuntimeException(e);
-            }
-
-
         }
     }
 
@@ -144,8 +115,9 @@ public class HackedUpSequencer {
 
         final long timeStamp = -1;
 
-        try {rcvr.send(myMsg, timeStamp);
-
+        try {
+            
+            rcvr.send(myMsg, timeStamp);
             System.out.println(name + " sequenced something " + seqNo.addAndGet(1));
         } catch (Exception e) {
             System.out.println(name + " couldn't send " + e);

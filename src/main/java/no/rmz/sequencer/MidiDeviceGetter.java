@@ -9,10 +9,10 @@ import javax.sound.midi.Transmitter;
 
 public final  class MidiDeviceGetter {
 
+    
     public MidiDeviceGetter() {
     }
     
-
 
     public static void listTransmitterDevices() throws MidiUnavailableException {
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
