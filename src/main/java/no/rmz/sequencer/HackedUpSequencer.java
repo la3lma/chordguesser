@@ -55,6 +55,7 @@ public class HackedUpSequencer {
             throw new IllegalStateException( name + " couldn't make message", ex);
         }
 
+        //  Doing the actual sequencing.
         this.runnable = () -> {
             while (isRunning.get()) {
                 sequenceSomething();
