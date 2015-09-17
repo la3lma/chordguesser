@@ -9,8 +9,6 @@ import javax.sound.midi.Receiver;
 public final class PlingPlongSequencer {
 
     private final String name;
-
-   
     private final Receiver rcvr;
     private final RecurringProcess process;
 
