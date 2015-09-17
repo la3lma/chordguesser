@@ -20,8 +20,6 @@ import javax.sound.midi.Transmitter;
 
 public class HackedUpSequencer {
 
-    private final static String MIDIFILENAME ="Disney_Themes_-_Fantasmic.mid";
-
     private final String name;
     private final AtomicBoolean isRunning;
     private final Runnable runnable;
