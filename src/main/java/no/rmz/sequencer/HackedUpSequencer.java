@@ -98,15 +98,12 @@ public class HackedUpSequencer {
     }
 
     public final static void startSequencer(final MidiDevice device) {
-        final String  deviceInfo = device.getDeviceInfo().getName();
+        final String deviceInfo = device.getDeviceInfo().getName();
 
-        if ("Bus 1".equals(deviceInfo)) {
-            final HackedUpSequencer hackedUpSequencer
-                    = new HackedUpSequencer(device);
-            // Fire up a thread and make it output something.
-            hackedUpSequencer.start();
+        final HackedUpSequencer hackedUpSequencer
+                = new HackedUpSequencer(device);
 
-        }
+        hackedUpSequencer.start();
     }
 
     private final AtomicInteger seqNo = new AtomicInteger(1);
@@ -116,7 +113,7 @@ public class HackedUpSequencer {
         final long timeStamp = -1;
 
         try {
-            
+
             rcvr.send(myMsg, timeStamp);
             System.out.println(name + " sequenced something " + seqNo.addAndGet(1));
         } catch (Exception e) {
