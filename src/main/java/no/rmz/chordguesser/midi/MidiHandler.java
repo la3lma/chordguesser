@@ -1,6 +1,6 @@
 package no.rmz.chordguesser.midi;
 
-import no.rmz.sequencer.HackedUpSequencer;
+import no.rmz.sequencer.PlingPlongSequencer;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Transmitter;
@@ -51,7 +51,7 @@ public final class MidiHandler {
                     System.out.println("--->Now looking at javaSequencer bus1");
                     if (device.getMaxReceivers() > 0) {
                         System.out.println("Found receivers in  bus1");
-                        HackedUpSequencer.startSequencer(device);
+                        PlingPlongSequencer.startSequencer(device);
                     } else {
                         System.out.println("Found no receivers in bus1");
                     }

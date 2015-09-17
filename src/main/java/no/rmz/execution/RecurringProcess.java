@@ -1,4 +1,4 @@
-package no.rmz.sequencer;
+package no.rmz.execution;
 
 import com.google.common.base.Preconditions;
 import java.util.concurrent.Executor;
