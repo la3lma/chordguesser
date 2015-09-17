@@ -5,13 +5,14 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 
 public final  class MidiDeviceGetter {
 
     public MidiDeviceGetter() {
     }
+    
+
 
     public static void listTransmitterDevices() throws MidiUnavailableException {
         MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
@@ -58,7 +59,10 @@ public final  class MidiDeviceGetter {
             IOException,
             InterruptedException {
        
-        HackedUpSequencer.startSequencer(PlayOneNote.newSynthesizer());
+        // XXX This works, and is actually a way to make noises
+        //     based on input.  Not to be dismissed, but in itself
+        //     much to restrictive and boring.
+        //HackedUpSequencer.startSequencer(PlayOneNote.newSynthesizer());
       
         MidiDeviceGetter.listReceiverDevices();
         Thread.currentThread().join();
