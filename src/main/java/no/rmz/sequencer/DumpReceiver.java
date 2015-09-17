@@ -36,10 +36,6 @@ package no.rmz.sequencer;
  */
 import java.io.PrintStream;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Track;
-import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.MetaMessage;
@@ -114,9 +110,11 @@ public class DumpReceiver
         m_bPrintTimeStampAsTicks = bPrintTimeStampAsTicks;
     }
 
+    @Override
     public void close() {
     }
 
+    @Override
     public void send(MidiMessage message, long lTimeStamp) {
         String strMessage = null;
         if (message instanceof ShortMessage) {
