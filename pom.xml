@@ -47,6 +47,13 @@
             <artifactId>mockito-all</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org</groupId>
+            <artifactId>jfugue</artifactId>
+            <version>5.0.4</version>
+            <type>java-source</type>
+        </dependency>
 
         <!--
 
