@@ -12,9 +12,10 @@ public final class PlingPlongSequencer {
     private final Receiver rcvr;
     private final RecurringProcess process;
 
-    public  PlingPlongSequencer(final MidiDevice device) {
+    public  PlingPlongSequencer(final MidiDevice device, final SoundGenerator sg ) {
 
         checkNotNull(device);
+        checkNotNull(sg);
        
         this.name = device.getDeviceInfo().getDescription();
 
@@ -25,9 +26,7 @@ public final class PlingPlongSequencer {
             throw new IllegalStateException(name + " MIDI receiver unavailable", ex);
         }
 
-        SoundGenerator sg = new SoundGenerator(rcvr);
-  
-        this.process = new RecurringProcess(() -> sg.generate());
+        this.process = new RecurringProcess(() -> sg.generate(this.rcvr));
     }
 
     

@@ -7,12 +7,10 @@ import javax.sound.midi.ShortMessage;
 
 
 public final class SoundGenerator {
-    private final Receiver recv;
     private final ShortMessage myMsg;
    
 
-    public SoundGenerator(final Receiver recv) {
-        this.recv = Preconditions.checkNotNull(recv);
+    public SoundGenerator() {
         this.myMsg = new ShortMessage();
         try {
             // Start playing the note Middle C (60),
@@ -23,7 +21,7 @@ public final class SoundGenerator {
         }
     }
 
-    public void generate() {
+    public void generate(final Receiver recv) {
         final long timeStamp = -1;
         recv.send(myMsg, timeStamp);
     }
