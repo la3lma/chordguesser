@@ -6,11 +6,11 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 
 
-public final class SoundGenerator {
+public final class OneNoteSoundGenerator {
     private final ShortMessage myMsg;
    
 
-    public SoundGenerator() {
+    public OneNoteSoundGenerator() {
         this.myMsg = new ShortMessage();
         try {
             // Start playing the note Middle C (60),
