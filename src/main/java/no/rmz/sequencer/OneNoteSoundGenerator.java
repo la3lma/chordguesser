@@ -6,7 +6,7 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 
 
-public final class OneNoteSoundGenerator {
+public final class OneNoteSoundGenerator implements SoundGenerator {
     private final ShortMessage myMsg;
    
 
@@ -21,6 +21,7 @@ public final class OneNoteSoundGenerator {
         }
     }
 
+    @Override
     public void generate(final Receiver recv) {
         final long timeStamp = -1;
         recv.send(myMsg, timeStamp);

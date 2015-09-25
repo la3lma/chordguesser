@@ -15,7 +15,7 @@ public  final class EventGenerator {
 
         final MidiDevice midiDevice
                 = IacDeviceUtilities.getMidiReceivingDevice(IAC_BUS_NAME);
-        final OneNoteSoundGenerator sg = new OneNoteSoundGenerator();
+        final SoundGenerator sg = new OneNoteSoundGenerator();
         final PlingPlongSequencer seq
                 = new PlingPlongSequencer(midiDevice, sg);
         seq.start();

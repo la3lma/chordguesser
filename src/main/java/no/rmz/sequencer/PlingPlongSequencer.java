@@ -12,7 +12,7 @@ public final class PlingPlongSequencer {
     private final Receiver rcvr;
     private final RecurringProcess process;
 
-    public  PlingPlongSequencer(final MidiDevice device, final OneNoteSoundGenerator sg ) {
+    public  PlingPlongSequencer(final MidiDevice device, final SoundGenerator sg) {
 
         checkNotNull(device);
         checkNotNull(sg);
