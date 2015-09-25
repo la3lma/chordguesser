@@ -27,8 +27,8 @@ public final class ChordGuesser {
         final ScaleCsvReader scr = new ScaleCsvReader();
         final List<ScaleBean> beanlist = scr.readScalesFromResourceCsv();
 
-        chordDb = new ChordAndScaleDatabase();
-        chordDb.importAllScales(beanlist);
+        this.chordDb = new ChordAndScaleDatabase();
+        this.chordDb.importAllScales(beanlist);
     }
 
     private final static class ReportingNoteListener implements NoteListener {
