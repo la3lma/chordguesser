@@ -62,8 +62,12 @@ public final class ChordAndScaleDatabase {
         });
     }
 
-    public Set<ScaleBean> getMatchingScales(final BitVector scaleBitvecto) {
-        checkNotNull(scaleBitvecto);
-        return scaledb.get(scaleBitvecto);
+    public Set<ScaleBean> getMatchingScales(final BitVector scaleBitvector) {
+        checkNotNull(scaleBitvector);
+        return scaledb.get(scaleBitvector);
+    }
+
+    public Set<ScaleBean> getAllScales() {
+        return allScales;
     }
 }
