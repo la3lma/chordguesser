@@ -1,5 +1,6 @@
 package no.rmz.scales;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import no.rmz.bitvectors.BitVector;
 import java.util.*;
 import java.util.logging.Level;
@@ -32,6 +33,7 @@ public final class ChordAndScaleDatabase {
     }
 
     public void importScale(final ScaleBean entry) {
+        checkNotNull(entry);
         synchronized (scaledb) {
 
             final String binary12notes = entry.getBinary12notes();
@@ -54,12 +56,14 @@ public final class ChordAndScaleDatabase {
     }
 
     public void  importAllScales (final Collection<ScaleBean> entries) {
+        checkNotNull(entries);
         entries.stream().forEach((sb) -> {
             importScale(sb);
         });
     }
 
-    public Set<ScaleBean> getMatchingScales(BitVector cMajorBitvector) {
-        return scaledb.get(cMajorBitvector);
+    public Set<ScaleBean> getMatchingScales(final BitVector scaleBitvecto) {
+        checkNotNull(scaleBitvecto);
+        return scaledb.get(scaleBitvecto);
     }
 }
