@@ -24,12 +24,11 @@ public final class ChordGuesser {
     private final ChordAndScaleDatabase chordDb;
 
     public ChordGuesser() throws FileNotFoundException, IOException {
-        final ScaleCsvReader scr = new ScaleCsvReader();
-        final List<ScaleBean> beanlist = scr.readScalesFromResourceCsv();
-
-        this.chordDb = new ChordAndScaleDatabase();
-        this.chordDb.importAllScales(beanlist);
+        this.chordDb = ScaleCsvReader.readChordAndScaleDatabaseFromResources();
     }
+    
+    
+   
 
     private final static class ReportingNoteListener implements NoteListener {
 

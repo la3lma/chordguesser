@@ -1,6 +1,5 @@
 package no.rmz.scales;
 
-import no.rmz.scales.ScaleBean;
 import static com.google.common.base.Preconditions.*;
 import au.com.bytecode.opencsv.CSVReader;
 import java.io.*;
@@ -124,6 +123,16 @@ public final class ScaleCsvReader {
         }).forEach((b) -> {
             result.add(b);
         });
+        return result;
+    }
+    
+    
+     public  static ChordAndScaleDatabase readChordAndScaleDatabaseFromResources() throws IOException {
+        final ScaleCsvReader scr = new ScaleCsvReader();
+        final List<ScaleBean> beanlist = scr.readScalesFromResourceCsv();
+
+        final ChordAndScaleDatabase result = new ChordAndScaleDatabase();
+        result.importAllScales(beanlist);
         return result;
     }
 }

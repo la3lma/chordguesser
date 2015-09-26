@@ -1,37 +1,63 @@
 package no.rmz.execution;
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
+import no.rmz.sequencer.SyncSource;
 
 /**
  * A process that is being run again, and again, and again, until it stops.
+ * Highly overengineered class. SHould be killed at first opportunity.
  */
-public final  class RecurringProcess {
+public final class RecurringProcess implements SyncSource {
+
     private final Executor executor;
     private final Runnable scheduledRunable;
     private final AtomicBoolean isRunning;
-    private long sleepInterval = 3000;
+    private final long sleepInterval = 500;
+    private Collection<Runnable> receivers;
 
     public RecurringProcess(final Runnable runnable) {
-        Preconditions.checkNotNull(runnable);
+        this();
+        checkNotNull(runnable);
+        synchronized (receivers) {
+            receivers.add(runnable);
+        }
+    }
+
+    public RecurringProcess() {
+
+        this.receivers = new LinkedList<>();
         this.executor = Executors.newSingleThreadExecutor();
         this.isRunning = new AtomicBoolean(false);
         //  Doing the actual sequencing.
-        this.scheduledRunable = () -> {
-            while (isRunning.get()) {
-                runnable.run();
-                try {
-                    Thread.sleep(sleepInterval);
-                } catch (InterruptedException ex) {
-                    stop();
-                    throw new RuntimeException(ex);
+        this.scheduledRunable = new Runnable() {
+
+            @Override
+            public void run() {
+                while (isRunning.get()) {
+                    synchronized (receivers) {
+                        for (final Runnable r : receivers) {
+                            r.run();
+                        }
+                    }
+                    try {
+                        Thread.sleep(sleepInterval);
+                    } catch (InterruptedException ex) {
+                        stop();
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         };
-    } //  Doing the actual sequencing.
+    }
 
+ 
+
+    @Override
     public void start() {
         synchronized (isRunning) {
             if (!isRunning.get()) {
@@ -52,5 +78,9 @@ public final  class RecurringProcess {
             }
         }
     }
-    
+
+    @Override
+    public void addReceiver(final Runnable runnable) {
+        receivers.add(runnable);
+    }
 }
