@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import no.rmz.sequencer.EventSource;
 
 /**
@@ -15,43 +17,62 @@ import no.rmz.sequencer.EventSource;
  * possibly other things. Parse it in realtime and generate events that can be
  * parsed musically.
  */
-public class FileReadingEventGenerator  implements EventSource {
-
-    private final static String FILENAME = "/tmp/tcpdump.log";
+public class FileReadingEventGenerator implements EventSource {
 
     private final File file;
-
-    public FileReadingEventGenerator() {
-        this(new File(FILENAME));
-    }
+    private final EventDistributor eventDistributor;
 
     public FileReadingEventGenerator(final File file) {
         this.file = checkNotNull(file);
+        this.eventDistributor = new EventDistributor();
     }
 
-    public void getEvents() throws FileNotFoundException, IOException {
-        
+    private void getEvents() throws FileNotFoundException, IOException {
+
         // XXX If file don't exist, busy-wait until it does.
-        
-        try (final FileInputStream fis = new FileInputStream(file);
+        while (!file.exists()) {
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException("Interrupted", ex);
+            }
+        }
+        final FileInputStream fis = new FileInputStream(file);
+
+        // fis.skip(Integer.MAX_VALUE);
+        try (
                 final InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
                 final BufferedReader br = new BufferedReader(isr);) {
             String line;
-            fis.skip(-1);
-            while ((line = br.readLine()) != null) {
-                // Deal with the line
+
+            while (file.exists()) {
+                line = br.readLine();
+                if (line != null) {
+                    // Deal with the line
+                    eventDistributor.broadcast();
+                } else {
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException("Interrupted", ex);
+                    }
+                }
             }
         }
-
     }
 
     @Override
     public void start() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            getEvents();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex); // XXX Bad form
+        }
     }
 
     @Override
-    public void addReceiver(Runnable runnable) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addReceiver(Runnable runnable
+    ) {
+        eventDistributor.add(runnable);
     }
 }
