@@ -1,6 +1,6 @@
 package no.rmz.sequencer;
 
-import no.rmz.execution.RecurringProcess;
+import no.rmz.eventgenerators.PingEveryHalfSecond;
 import static com.google.common.base.Preconditions.checkNotNull;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
@@ -10,15 +10,10 @@ public final class PlingPlongSequencer {
 
     private final String name;
     private final Receiver rcvr;
-    private final SyncSource ss;
+    private final EventSource ss;
 
-  
     
-    public  PlingPlongSequencer(final MidiDevice device, final SoundGenerator sg) {
-        this(new RecurringProcess(), device, sg);
-    }
-    
-    public  PlingPlongSequencer(final SyncSource ss, final MidiDevice device, final SoundGenerator sg) {
+    public  PlingPlongSequencer(final EventSource ss, final MidiDevice device, final SoundGenerator sg) {
 
         checkNotNull(ss);
         checkNotNull(device);

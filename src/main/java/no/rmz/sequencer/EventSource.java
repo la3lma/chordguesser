@@ -1,6 +1,6 @@
 package no.rmz.sequencer;
 
-public interface SyncSource {
+public interface EventSource {
 
     public void start();
     

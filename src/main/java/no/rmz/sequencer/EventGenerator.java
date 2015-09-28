@@ -2,6 +2,7 @@ package no.rmz.sequencer;
 
 import java.io.IOException;
 import javax.sound.midi.MidiDevice;
+import no.rmz.eventgenerators.PingEveryHalfSecond;
 import no.rmz.scales.ChordAndScaleDatabase;
 import no.rmz.scales.ScaleBean;
 import no.rmz.scales.ScaleCsvReader;
@@ -26,7 +27,7 @@ public  final class EventGenerator {
         final ScaleBean scale = chordDb.getAllScales().iterator().next();
         final SoundGenerator sg = new RandomScaleToneGenerator(scale);
         final PlingPlongSequencer seq
-                = new PlingPlongSequencer(midiDevice, sg);
+                = new PlingPlongSequencer(new PingEveryHalfSecond(), midiDevice, sg);
         seq.start();
     }
 }
