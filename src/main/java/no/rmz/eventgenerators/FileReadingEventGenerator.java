@@ -52,6 +52,7 @@ public class FileReadingEventGenerator implements EventSource {
                     eventDistributor.broadcast();
                 } else {
                     try {
+                    // Or wait a little before trying to fetch another.
                         Thread.sleep(300);
                     } catch (InterruptedException ex) {
                         throw new RuntimeException("Interrupted", ex);
