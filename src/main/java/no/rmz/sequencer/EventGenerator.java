@@ -3,7 +3,7 @@ package no.rmz.sequencer;
 import java.io.File;
 import java.io.IOException;
 import javax.sound.midi.MidiDevice;
-import no.rmz.eventgenerators.FileReadingEventGenerator;
+import no.rmz.eventgenerators.TcpdumpFileReadingEventGenerator;
 import no.rmz.eventgenerators.PingEveryHalfSecond;
 import no.rmz.scales.ChordAndScaleDatabase;
 import no.rmz.scales.ScaleBean;
@@ -19,7 +19,8 @@ public final class EventGenerator {
 
     private final static String FILENAME = "/tmp/tcpdump.log";
 
-    public final static void main(final String[] argv) throws SequencerException, IOException {
+    public final static void main(final String[] argv) throws SequencerException, 
+            IOException, InterruptedException {
         final ChordAndScaleDatabase chordDb;
         chordDb = ScaleCsvReader.readChordAndScaleDatabaseFromResources();
 
@@ -30,7 +31,8 @@ public final class EventGenerator {
         final File file = new File(FILENAME);
         final PlingPlongSequencer seq
                 = new PlingPlongSequencer(
-                        new FileReadingEventGenerator(file), midiDevice, sg);
+                        new TcpdumpFileReadingEventGenerator(file), midiDevice, sg);
         seq.start();
+        Thread.currentThread().join();
     }
 }

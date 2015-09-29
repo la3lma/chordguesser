@@ -17,16 +17,50 @@ import no.rmz.sequencer.EventSource;
  * possibly other things. Parse it in realtime and generate events that can be
  * parsed musically.
  */
-public class FileReadingEventGenerator implements EventSource {
+public class TcpdumpFileReadingEventGenerator implements EventSource {
 
     private final File file;
     private final EventDistributor eventDistributor;
 
-    public FileReadingEventGenerator(final File file) {
+    public TcpdumpFileReadingEventGenerator(final File file) {
         this.file = checkNotNull(file);
         this.eventDistributor = new EventDistributor();
     }
 
+    public final static class TcpdumpEvent {
+        final Long timestamp;
+
+        public TcpdumpEvent(final String line) throws JitterPreventionFailureException {
+            // Parse the line as a tcpdump output line
+            if (line == null) {
+                this.timestamp = null;
+            } else {
+                final String[] split = line.split(" +");
+                final String timestampString = split[0];
+                if (timestampString == null || timestampString.trim().isEmpty()) {
+                    this.timestamp = null;
+                } else {
+                    this.timestamp
+                            = TimestampJitterPreventer.parseTimestamp(timestampString);
+                }
+            }
+        }
+
+        public Long getTimestamp() {
+            return timestamp;
+        }
+
+        
+        public boolean isValid() {
+            return this.timestamp != null;
+        }
+    }
+    
+    public static final String[]  parseTcpdumpLine(final String line) {
+        // Parse the line as a tcpdump output line
+        return line.split(" +");
+    }
+    
     private void getEvents() throws FileNotFoundException, IOException {
 
         // XXX If file don't exist, busy-wait until it does.
@@ -43,12 +77,15 @@ public class FileReadingEventGenerator implements EventSource {
         try (
                 final InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
                 final BufferedReader br = new BufferedReader(isr);) {
-            String line;
-
+       
+            final TimestampJitterPreventer tjp = new TimestampJitterPreventer();
+     
             while (file.exists()) {
-                line = br.readLine();
-                if (line != null) {
-                    // Deal with the line
+                final String line = br.readLine();
+                final TcpdumpEvent  event = new TcpdumpEvent(line);
+                
+                if (event.isValid()) {
+                    tjp.unjitter(event.getTimestamp());
                     eventDistributor.broadcast();
                 } else {
                     try {
@@ -59,6 +96,8 @@ public class FileReadingEventGenerator implements EventSource {
                     }
                 }
             }
+        } catch (JitterPreventionFailureException ex) {
+           new RuntimeException(ex); // XXX Exeption(al) crime.
         }
     }
 
@@ -76,4 +115,4 @@ public class FileReadingEventGenerator implements EventSource {
     ) {
         eventDistributor.add(runnable);
     }
-}
+    }
