@@ -8,8 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import no.rmz.sequencer.EventParser;
 import no.rmz.sequencer.EventSource;
 
 /**
@@ -17,50 +16,26 @@ import no.rmz.sequencer.EventSource;
  * possibly other things. Parse it in realtime and generate events that can be
  * parsed musically.
  */
-public class TcpdumpFileReadingEventGenerator implements EventSource {
+public class FileReadingEventGenerator implements EventSource {
 
     private final File file;
     private final EventDistributor eventDistributor;
+    private final EventParser parser;
 
-    public TcpdumpFileReadingEventGenerator(final File file) {
+    /**
+     * 
+     * @param file The file to parse.
+     * @param parser Will parse all incoming lines and if the input line was
+     *   a valid item, it will be transmitted along the signal path.
+     */
+    public FileReadingEventGenerator(
+            final File file,
+            final EventParser parser) {
         this.file = checkNotNull(file);
         this.eventDistributor = new EventDistributor();
+        this.parser = checkNotNull(parser);
     }
 
-    public final static class TcpdumpEvent {
-        final Long timestamp;
-
-        public TcpdumpEvent(final String line) throws JitterPreventionFailureException {
-            // Parse the line as a tcpdump output line
-            if (line == null) {
-                this.timestamp = null;
-            } else {
-                final String[] split = line.split(" +");
-                final String timestampString = split[0];
-                if (timestampString == null || timestampString.trim().isEmpty()) {
-                    this.timestamp = null;
-                } else {
-                    this.timestamp
-                            = TimestampJitterPreventer.parseTimestamp(timestampString);
-                }
-            }
-        }
-
-        public Long getTimestamp() {
-            return timestamp;
-        }
-
-        
-        public boolean isValid() {
-            return this.timestamp != null;
-        }
-    }
-    
-    public static final String[]  parseTcpdumpLine(final String line) {
-        // Parse the line as a tcpdump output line
-        return line.split(" +");
-    }
-    
     private void getEvents() throws FileNotFoundException, IOException {
 
         // XXX If file don't exist, busy-wait until it does.
@@ -71,25 +46,26 @@ public class TcpdumpFileReadingEventGenerator implements EventSource {
                 throw new RuntimeException("Interrupted", ex);
             }
         }
+
         final FileInputStream fis = new FileInputStream(file);
 
-        // fis.skip(Integer.MAX_VALUE);
+        // fis.skip(Integer.MAX_VALUE); // XXX We reallyshould do this, why don't we?
         try (
                 final InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF-8"));
                 final BufferedReader br = new BufferedReader(isr);) {
-       
-            final TimestampJitterPreventer tjp = new TimestampJitterPreventer();
-     
+
+            final JitterPreventer tjp = new JitterPreventer();
+
             while (file.exists()) {
                 final String line = br.readLine();
-                final TcpdumpEvent  event = new TcpdumpEvent(line);
-                
+                final ParsedEvent event = parser.parse(line);
+
                 if (event.isValid()) {
                     tjp.unjitter(event.getTimestamp());
                     eventDistributor.broadcast();
                 } else {
                     try {
-                    // Or wait a little before trying to fetch another.
+                        // Or wait a little before trying to fetch another.
                         Thread.sleep(300);
                     } catch (InterruptedException ex) {
                         throw new RuntimeException("Interrupted", ex);
@@ -97,7 +73,7 @@ public class TcpdumpFileReadingEventGenerator implements EventSource {
                 }
             }
         } catch (JitterPreventionFailureException ex) {
-           new RuntimeException(ex); // XXX Exeption(al) crime.
+            new RuntimeException(ex); // XXX Exeption(al) crime.
         }
     }
 
@@ -111,8 +87,8 @@ public class TcpdumpFileReadingEventGenerator implements EventSource {
     }
 
     @Override
-    public void addReceiver(Runnable runnable
-    ) {
+    public void addReceiver(final Runnable runnable) {
+        checkNotNull(runnable);
         eventDistributor.add(runnable);
     }
-    }
+}

@@ -1,6 +1,5 @@
 package no.rmz.sequencer;
 
-import com.google.common.base.Preconditions;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;

@@ -1,6 +1,5 @@
 package no.rmz.sequencer;
 
-import no.rmz.eventgenerators.PingEveryHalfSecond;
 import static com.google.common.base.Preconditions.checkNotNull;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;

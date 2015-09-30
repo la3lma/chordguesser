@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  * Assumes that data consists of a sequence of text lines 
  * containing patterns like this: 16:40:51.154335.
  */
-public class TimestampJitterPreventer {
+public class JitterPreventer {
     
     private final static Pattern pattern =
             Pattern.compile("(\\d{2}):(\\d{2}):(\\d{2}).(\\d{6})");
