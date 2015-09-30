@@ -2,13 +2,9 @@ package no.rmz.sequencer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sound.midi.MidiDevice;
 import no.rmz.eventgenerators.JitterPreventionFailureException;
-import no.rmz.eventgenerators.ParsedEvent;
 import no.rmz.eventgenerators.FileReadingEventGenerator;
-import no.rmz.eventgenerators.PingEveryHalfSecond;
 import no.rmz.eventgenerators.TcpdumpEvent;
 import no.rmz.scales.ChordAndScaleDatabase;
 import no.rmz.scales.ScaleBean;
@@ -21,13 +17,9 @@ import no.rmz.scales.ScaleCsvReader;
 public final class EventGenerator {
 
     private final static String IAC_BUS_NAME = "Bus 1";
-
     private final static String FILENAME = "/tmp/tcpdump.log";
-    
-    
 
-
-    public final static void main(final String[] argv) throws SequencerException, 
+    public final static void main(final String[] argv) throws SequencerException,
             IOException, InterruptedException, JitterPreventionFailureException {
         final ChordAndScaleDatabase chordDb;
         chordDb = ScaleCsvReader.readChordAndScaleDatabaseFromResources();
@@ -38,15 +30,16 @@ public final class EventGenerator {
         final SoundGenerator sg = new RandomScaleToneGenerator(scale);
         final File file = new File(FILENAME);
         final EventParser tcpdumpParser;
-        tcpdumpParser = (String str) ->   new TcpdumpEvent(str);
+        tcpdumpParser = (String str) ->  new TcpdumpEvent(str);
         final PlingPlongSequencer seq;
-        seq = new PlingPlongSequencerBuilder()
+        seq = PlingPlongSequencer.newBuilder()
                 .setDevice(midiDevice)
                 .setSoundGenerator(sg)
-                .setSignalSource(new FileReadingEventGenerator(file,
+                .setSignalSource(
+                        new FileReadingEventGenerator(file,
                         tcpdumpParser))
                 .build();
-       
+
         seq.start();
         Thread.currentThread().join();
     }
