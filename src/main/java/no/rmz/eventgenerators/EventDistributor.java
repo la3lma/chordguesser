@@ -5,23 +5,30 @@ import java.util.LinkedList;
 
 
 public  final class EventDistributor {
-    private Collection<Runnable> receivers;
+    private Collection<EventReceiver> receivers;
 
     public EventDistributor() {
         this.receivers = new LinkedList<>();
     }
 
-    public void broadcast() {
+    public void broadcast(final ParsedEvent event) {
         synchronized (receivers) {
-            for (final Runnable r : receivers) {
-                r.run();
+            for (final EventReceiver r : receivers) {
+                r.receive(event);
             }
         }
     }
 
-    void add(Runnable runnable) {
+    void add(EventReceiver runnable) {
         synchronized (receivers) {
             receivers.add(runnable);
         }
+    }
+
+    public interface class EventReceiver {
+
+     
+
+        private void receive(ParsedEvent event);
     }
 }

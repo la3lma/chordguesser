@@ -2,7 +2,7 @@ package no.rmz.sequencer;
 
 import java.io.File;
 import java.io.IOException;
-import javax.sound.midi.MidiDevice;
+    import javax.sound.midi.MidiDevice;
 import no.rmz.eventgenerators.JitterPreventionFailureException;
 import no.rmz.eventgenerators.FileReadingEventGenerator;
 import no.rmz.eventgenerators.TcpdumpEvent;
@@ -39,6 +39,12 @@ public final class EventGenerator {
                         new FileReadingEventGenerator(file,
                         tcpdumpParser))
                 .build();
+        // XXX Now its time to find someting that sounds good :-)
+        // a) Logarithmically enveloped percussion track based on 
+        //    total input
+        // b) The http v.s. https melody
+        // c) Arp interruptions
+        // d) Printer protocols interruptions.
 
         seq.start();
         Thread.currentThread().join();

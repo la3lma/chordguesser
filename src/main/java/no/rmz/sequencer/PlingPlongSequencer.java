@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import no.rmz.eventgenerators.ParsedEvent;
 
 public final class PlingPlongSequencer {
 
@@ -34,7 +35,7 @@ public final class PlingPlongSequencer {
             throw new IllegalStateException(name + " MIDI receiver unavailable", ex);
         }
 
-        this.ss.addReceiver(() -> {
+        this.ss.addReceiver((ParsedEvent ev) -> {
             sg.generate(this.rcvr);
         });
     }

@@ -62,7 +62,7 @@ public class FileReadingEventGenerator implements EventSource {
 
                 if (event.isValid()) {
                     tjp.unjitter(event.getTimestamp());
-                    eventDistributor.broadcast();
+                    eventDistributor.broadcast(event);
                 } else {
                     try {
                         // Or wait a little before trying to fetch another.
@@ -87,7 +87,7 @@ public class FileReadingEventGenerator implements EventSource {
     }
 
     @Override
-    public void addReceiver(final Runnable runnable) {
+    public void addReceiver(final EventReceiver runnable) {
         checkNotNull(runnable);
         eventDistributor.add(runnable);
     }

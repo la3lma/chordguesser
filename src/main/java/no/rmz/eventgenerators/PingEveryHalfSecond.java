@@ -11,10 +11,10 @@ public final class PingEveryHalfSecond implements EventSource {
     private final EventDistributor broadcaster;
     private final PeriodicInvoker pv;
 
-    public PingEveryHalfSecond(final Runnable runnable) {
+    public PingEveryHalfSecond(final EventReceiver receiver) {
         this();
-        checkNotNull(runnable);
-        broadcaster.add(runnable);
+        checkNotNull(receiver);
+        broadcaster.add(receiver);
     }
 
     public PingEveryHalfSecond() {
@@ -23,14 +23,25 @@ public final class PingEveryHalfSecond implements EventSource {
 
             @Override
             public void run() {
-                broadcaster.broadcast();
+                broadcaster.broadcast(new ParsedEvent() {
+
+                    @Override
+                    public boolean isValid() {
+                        return true;
+                    }
+
+                    @Override
+                    public long getTimestamp() {
+                        return -1;
+                    }
+                });
             }
         });
     }
 
     @Override
-    public void addReceiver(final Runnable runnable) {
-        broadcaster.add(runnable);
+    public void addReceiver(final EventReceiver rec) {
+        broadcaster.add(rec);
     }
 
     @Override
