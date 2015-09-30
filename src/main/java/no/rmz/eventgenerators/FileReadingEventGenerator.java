@@ -87,8 +87,8 @@ public class FileReadingEventGenerator implements EventSource {
     }
 
     @Override
-    public void addReceiver(final EventReceiver runnable) {
-        checkNotNull(runnable);
-        eventDistributor.add(runnable);
+    public void addReceiver(final EventReceiver rec) {
+        checkNotNull(rec);
+        eventDistributor.add(rec);
     }
 }

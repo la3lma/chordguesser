@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 
 public  final class EventDistributor {
-    private Collection<EventReceiver> receivers;
+    private final Collection<EventReceiver> receivers;
 
     public EventDistributor() {
         this.receivers = new LinkedList<>();
@@ -23,12 +23,5 @@ public  final class EventDistributor {
         synchronized (receivers) {
             receivers.add(runnable);
         }
-    }
-
-    public interface class EventReceiver {
-
-     
-
-        private void receive(ParsedEvent event);
     }
 }
