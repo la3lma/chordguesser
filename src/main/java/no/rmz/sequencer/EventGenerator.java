@@ -19,7 +19,7 @@ public final class EventGenerator {
     private final static String IAC_BUS_NAME = "Bus 1";
     private final static String FILENAME = "/tmp/tcpdump.log";
 
-    public final static void main(final String[] argv) throws SequencerException,
+    public final static void mains(final String[] argv) throws SequencerException,
             IOException, InterruptedException, JitterPreventionFailureException {
         final ChordAndScaleDatabase chordDb;
         chordDb = ScaleCsvReader.readChordAndScaleDatabaseFromResources();
@@ -32,6 +32,8 @@ public final class EventGenerator {
         final EventParser tcpdumpParser;
         tcpdumpParser = (String str) ->  new TcpdumpEvent(str);
         final PlingPlongSequencer seq;
+        
+ 
         seq = PlingPlongSequencer.newBuilder()
                 .setDevice(midiDevice)
                 .setSoundGenerator(sg)
@@ -47,6 +49,48 @@ public final class EventGenerator {
         // d) Printer protocols interruptions.
 
         seq.start();
+        Thread.currentThread().join();
+    }
+    
+    
+    
+    public final static void main(final String[] argv) throws SequencerException,
+            IOException, InterruptedException, JitterPreventionFailureException {
+        final ChordAndScaleDatabase chordDb;
+        chordDb = ScaleCsvReader.readChordAndScaleDatabaseFromResources();
+
+        final MidiDevice midiDevice
+                = IacDeviceUtilities.getMidiReceivingDevice(IAC_BUS_NAME);
+        final ScaleBean scale = chordDb.getAllScales().iterator().next();
+        final SoundGenerator sg = new RandomScaleToneGenerator(scale);
+        final File file = new File(FILENAME);
+        final EventParser tcpdumpParser;
+        tcpdumpParser = (String str) -> new TcpdumpEvent(str);
+        final PlingPlongSequencer seq;
+
+        final EventSource clockedPoller;
+        final GatedReceiver gatedReceiver = new GatedReceiver();
+
+        final FileReadingEventGenerator fileReadingEventGenerator
+                = new FileReadingEventGenerator(
+                        file,
+                        tcpdumpParser);
+        fileReadingEventGenerator.addReceiver(gatedReceiver);
+        clockedPoller = new ClockedPoller(
+                gatedReceiver,
+                200);
+        
+
+        seq = PlingPlongSequencer.newBuilder()
+                .setDevice(midiDevice)
+                .setSoundGenerator(sg)
+                .setSignalSource(clockedPoller)
+                .build();
+       
+        clockedPoller.start();  // Asynch
+        seq.start(); // Aynch
+        fileReadingEventGenerator.start(); // Synch
+        
         Thread.currentThread().join();
     }
 }

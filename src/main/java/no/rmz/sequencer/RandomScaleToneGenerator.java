@@ -1,7 +1,6 @@
 package no.rmz.sequencer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import javax.sound.midi.InvalidMidiDataException;
@@ -23,14 +22,11 @@ public final class RandomScaleToneGenerator implements SoundGenerator {
             final String scaletones = scale.getBinary12notes();
             for (int i = 0; i < scaletones.length(); i++) {
                 if (scaletones.charAt(i) == '1') {
-                    final ShortMessage myMsg = new ShortMessage();
-                    myMsg.setMessage(ShortMessage.NOTE_ON, 0, 60 + i, 93);
-                    myMsgs.add(myMsg);
+                    final ShortMessage onMessage = new ShortMessage();
+                    onMessage.setMessage(ShortMessage.NOTE_ON, 0, 60 + i, 93);
+                    myMsgs.add(onMessage);
                 }
             }
-            
-            System.out.println("Length of mysgs = " + myMsgs.size());
-
         } catch (InvalidMidiDataException ex) {
             throw new IllegalStateException(" couldn't make message", ex);
         }
@@ -38,7 +34,7 @@ public final class RandomScaleToneGenerator implements SoundGenerator {
 
     @Override
     public void generate(final Receiver recv) {
-        final long timeStamp =   -1;
+        final long timeStamp =   -1; // XXX Perhaps use this?
         final ShortMessage myMsg = randomScaleTone();
         recv.send(myMsg, timeStamp);
     }

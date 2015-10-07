@@ -19,7 +19,7 @@ public  final class EventDistributor {
         }
     }
 
-    void add(EventReceiver runnable) {
+    public void add(EventReceiver runnable) {
         synchronized (receivers) {
             receivers.add(runnable);
         }
