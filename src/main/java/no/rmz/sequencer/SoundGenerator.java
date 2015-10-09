@@ -5,6 +5,5 @@ import javax.sound.midi.Receiver;
 
 public interface SoundGenerator {
 
-    void generate(final Receiver recv);
-    
+    void generate(final Receiver recv); 
 }
