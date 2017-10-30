@@ -7,7 +7,7 @@ final class ScheduledEntry implements Comparable<ScheduledEntry>, Runnable{
     private final long timeInMillis;
     private final Runnable runnable;
 
-    public ScheduledEntry(final long timeInMillis, final Runnable runnable) {
+    ScheduledEntry(final long timeInMillis, final Runnable runnable) {
         this.timeInMillis = timeInMillis;
         if (timeInMillis < 0) {
             throw new IllegalArgumentException("Timestamp < zero");

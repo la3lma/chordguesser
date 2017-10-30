@@ -1,10 +1,10 @@
 package no.rmz.scales;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import no.rmz.bitvectors.BitVector;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import no.rmz.bitvectors.BitVector;
 
 /**
  *  A very simple database of chords and scales. Fully in-memory
@@ -68,6 +68,6 @@ public final class ChordAndScaleDatabase {
     }
 
     public Set<ScaleBean> getAllScales() {
-        return allScales;
+        return Collections.unmodifiableSet(allScales);
     }
 }

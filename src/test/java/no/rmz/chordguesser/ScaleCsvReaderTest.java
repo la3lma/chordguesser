@@ -1,7 +1,7 @@
 package no.rmz.chordguesser;
 
-import no.rmz.scales.ScaleCsvReader;
 import java.util.List;
+import no.rmz.scales.ScaleCsvReader;
 import org.junit.*;
 import static org.junit.Assert.*;
 

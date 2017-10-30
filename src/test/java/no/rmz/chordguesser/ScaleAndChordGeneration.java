@@ -52,4 +52,7 @@ public final  class ScaleAndChordGeneration {
                     ScaleAndChordGeneration.MIDDLE_C_MIDI_ENCODING + 7});
         return cMajorChordArpeggiated;
     }
+
+    private ScaleAndChordGeneration() {
+    }
 }

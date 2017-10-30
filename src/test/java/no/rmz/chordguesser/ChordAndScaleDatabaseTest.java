@@ -1,11 +1,11 @@
 package no.rmz.chordguesser;
 
-import no.rmz.scales.ScaleCsvReader;
-import no.rmz.scales.ScaleBean;
-import no.rmz.scales.ChordAndScaleDatabase;
-import no.rmz.bitvectors.BitVector;
 import java.util.List;
 import java.util.Set;
+import no.rmz.bitvectors.BitVector;
+import no.rmz.scales.ChordAndScaleDatabase;
+import no.rmz.scales.ScaleBean;
+import no.rmz.scales.ScaleCsvReader;
 import org.junit.*;
 import static org.junit.Assert.*;
 

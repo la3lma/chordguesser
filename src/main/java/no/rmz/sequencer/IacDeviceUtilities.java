@@ -10,11 +10,6 @@ import javax.sound.midi.MidiUnavailableException;
  */
 public final class IacDeviceUtilities {
 
-    /**
-     * Utility class, no creator.
-     */
-    private IacDeviceUtilities() {
-    }
 
     /**
      * Get a midi device ready to receive input.
@@ -39,5 +34,10 @@ public final class IacDeviceUtilities {
             }
         }
         throw new SequencerException("Couldn't find midi device : " + devicename);
+    }
+    /**
+     * Utility class, no creator.
+     */
+    private IacDeviceUtilities() {
     }
 }

@@ -1,7 +1,7 @@
 package no.rmz.chordguesser;
 
-import no.rmz.chordguesser.midi.MidiMessageDecoder;
 import no.rmz.chordguesser.midi.MidiCmd;
+import no.rmz.chordguesser.midi.MidiMessageDecoder;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;

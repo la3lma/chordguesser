@@ -20,20 +20,35 @@ public final class ChordGuesser {
 
     private final static Logger LOG =
             Logger.getLogger(ChordGuesser.class.getName());
+    /**
+     * @param args the command line arguments
+     * @throws java.lang.Exception
+     */
+    public static void main(String[] args) throws Exception {
+        new ChordGuesser().run();
+        Thread.currentThread().join();
+    }
     private final ChordAndScaleDatabase chordDb;
 
     public ChordGuesser() throws FileNotFoundException, IOException {
         this.chordDb = ScaleCsvReader.readChordAndScaleDatabaseFromResources();
     }
 
-    private final static class ReportingNoteListener implements NoteListener {
+
+    private void run() {
+        final MidiHandler mh =
+                new MidiHandler(new ReportingNoteListener(chordDb));
+        mh.run();
+    }
+
+    private static final class ReportingNoteListener implements NoteListener {
 
         final ChordAndScaleDatabase db;
         final BitVector bv = new BitVector(12);
         final PolyphonicState ps = new PolyphonicState();
         private final Object monitor = new Object();
 
-        public ReportingNoteListener(final ChordAndScaleDatabase db) {
+        ReportingNoteListener(final ChordAndScaleDatabase db) {
             this.db = db;
         }
 
@@ -68,20 +83,5 @@ public final class ChordGuesser {
                         sb.getAlternativeScaleNames());
             });
         }
-    }
-
-    private void run() {
-        final MidiHandler mh =
-                new MidiHandler(new ReportingNoteListener(chordDb));
-        mh.run();
-    }
-
-    /**
-     * @param args the command line arguments
-     * @throws java.lang.Exception
-     */
-    public static void main(String[] args) throws Exception {
-        new ChordGuesser().run();
-        Thread.currentThread().join();
     }
 }

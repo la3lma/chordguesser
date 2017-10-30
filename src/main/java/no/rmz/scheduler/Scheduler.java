@@ -24,8 +24,11 @@ public final class Scheduler {
     }
 
     private void interruptQueue() {
-        synchronized (lock) {
+        lock.lock();
+        try {
             lock.notify();
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -49,8 +52,11 @@ public final class Scheduler {
 
                 if (interval != 0) {
                     try {
-                        synchronized (lock) {
+                        lock.lock();
+                        try {
                             lock.wait(interval);
+                        } finally {
+                            lock.unlock();
                         }
                     } catch (InterruptedException ex) {
                         LOG.info("Scheduler was interrupted");

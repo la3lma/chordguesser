@@ -1,7 +1,7 @@
 package no.rmz.scales;
 
-import static com.google.common.base.Preconditions.*;
 import au.com.bytecode.opencsv.CSVReader;
+import static com.google.common.base.Preconditions.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,32 +99,6 @@ public final class ScaleCsvReader {
 
     }
 
-    public  List<ScaleBean> readScalesFromResourceCsv() throws FileNotFoundException, IOException {
-
-        // XXX This is fairly inefficient parsing, but if more efficiency
-        //     is needed, (that's not certain), hints can be found here:
-        //         http://opencsv.sourceforge.net/apidocs/index.html
-        //         http://opencsv.sourceforge.net/,
-
-
-        final InputStream scaleCsvStream = this.getClass().getResourceAsStream(SCALE_CSV_RESOURCE_PATH);
-        checkNotNull(scaleCsvStream, "scaleCsvStram can't be null. Probably couldn't locate scale csv resource " + SCALE_CSV_RESOURCE_PATH);
-        final InputStreamReader inputStreamReader = new InputStreamReader(scaleCsvStream, "UTF-8");
-
-        final CSVReader chords = new CSVReader(inputStreamReader);
-        final List<String[]> allChordsAsArrays = chords.readAll();
-
-
-        final List<ScaleBean> result = new ArrayList<>(allChordsAsArrays.size() - 1);
-        allChordsAsArrays.subList(1, allChordsAsArrays.size()).stream().map((v) -> {
-            final ScaleBean b = new ScaleBean();
-            assign(b, v);
-            return b;
-        }).forEach((b) -> {
-            result.add(b);
-        });
-        return result;
-    }
     
     
      public  static ChordAndScaleDatabase readChordAndScaleDatabaseFromResources() throws IOException {
@@ -135,4 +109,30 @@ public final class ScaleCsvReader {
         result.importAllScales(beanlist);
         return result;
     }
+     public  List<ScaleBean> readScalesFromResourceCsv() throws FileNotFoundException, IOException {
+         
+         // XXX This is fairly inefficient parsing, but if more efficiency
+         //     is needed, (that's not certain), hints can be found here:
+         //         http://opencsv.sourceforge.net/apidocs/index.html
+         //         http://opencsv.sourceforge.net/,
+         
+         
+         final InputStream scaleCsvStream = this.getClass().getResourceAsStream(SCALE_CSV_RESOURCE_PATH);
+         checkNotNull(scaleCsvStream, "scaleCsvStram can't be null. Probably couldn't locate scale csv resource " + SCALE_CSV_RESOURCE_PATH);
+         final InputStreamReader inputStreamReader = new InputStreamReader(scaleCsvStream, "UTF-8");
+         
+         final CSVReader chords = new CSVReader(inputStreamReader);
+         final List<String[]> allChordsAsArrays = chords.readAll();
+         
+         
+         final List<ScaleBean> result = new ArrayList<>(allChordsAsArrays.size() - 1);
+         allChordsAsArrays.subList(1, allChordsAsArrays.size()).stream().map((v) -> {
+             final ScaleBean b = new ScaleBean();
+             assign(b, v);
+             return b;
+         }).forEach((b) -> {
+             result.add(b);
+         });
+         return result;
+     }
 }

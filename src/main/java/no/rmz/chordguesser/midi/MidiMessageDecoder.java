@@ -1,7 +1,6 @@
 package no.rmz.chordguesser.midi;
 
 import no.rmz.chordguesser.NoteListener;
-import no.rmz.chordguesser.midi.MidiCmd;
 
 public final class MidiMessageDecoder {
 

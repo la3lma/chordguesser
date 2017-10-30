@@ -16,6 +16,24 @@ public final class BitVector implements Comparable<BitVector> {
      */
     private static final int NO_OF_BITS_IN_A_BYTE = 64;
     /**
+     * Combine the results of op1 and op2 into result. All the four operators
+     * must be of equal length for this operation to succeed.
+     */
+    public static void and(
+            final BitVector result,
+            final BitVector op1,
+            final BitVector op2) {
+        if (result.lengthInBits != op1.lengthInBits
+                || result.lengthInBits != op2.lengthInBits) {
+            throw new IllegalArgumentException(
+                    "both operands and the result must have the same number of bits");
+        }
+        
+        for (int i = 0; i < result.lengthInBytes; i++) {
+            result.bytes[i] = (long) ((long) op1.bytes[i] & (long) op2.bytes[i]);
+        }
+    }
+    /**
      * The number of bits.
      */
     private final int lengthInBits;
@@ -28,20 +46,6 @@ public final class BitVector implements Comparable<BitVector> {
      */
     private final long[] bytes;
 
-    /**
-     * Throw an IllegalArgumentException if the parameter is not a valid index
-     * into a bit.
-     *
-     * @param bit
-     */
-    private void checkArg(final int bit) {
-        if (bit < 0) {
-            throw new IllegalArgumentException("Index less than zero");
-        } else if (bit >= lengthInBits) {
-            throw new IllegalArgumentException(
-                    "Index larger than  length (" + lengthInBits + ")");
-        }
-    }
 
     /**
      * Create a bit vector that is initialized by the bits described in the
@@ -67,6 +71,20 @@ public final class BitVector implements Comparable<BitVector> {
         this.lengthInBits = noOfBits;
         this.lengthInBytes = (noOfBits / NO_OF_BITS_IN_A_BYTE) + 1;
         this.bytes = new long[lengthInBytes];
+    }
+    /**
+     * Throw an IllegalArgumentException if the parameter is not a valid index
+     * into a bit.
+     *
+     * @param bit
+     */
+    private void checkArg(final int bit) {
+        if (bit < 0) {
+            throw new IllegalArgumentException("Index less than zero");
+        } else if (bit >= lengthInBits) {
+            throw new IllegalArgumentException(
+                    "Index larger than  length (" + lengthInBits + ")");
+        }
     }
 
     /**
@@ -164,24 +182,6 @@ public final class BitVector implements Comparable<BitVector> {
         return hash;
     }
 
-    /**
-     * Combine the results of op1 and op2 into result. All the four operators
-     * must be of equal length for this operation to succeed.
-     */
-    public static void and(
-            final BitVector result,
-            final BitVector op1,
-            final BitVector op2) {
-        if (result.lengthInBits != op1.lengthInBits
-                || result.lengthInBits != op2.lengthInBits) {
-            throw new IllegalArgumentException(
-                    "both operands and the result must have the same number of bits");
-        }
-
-        for (int i = 0; i < result.lengthInBytes; i++) {
-            result.bytes[i] = (long) ((long) op1.bytes[i] & (long) op2.bytes[i]);
-        }
-    }
 
     @Override
     public int compareTo(final BitVector other) {
