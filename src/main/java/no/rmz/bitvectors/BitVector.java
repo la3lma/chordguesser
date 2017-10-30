@@ -18,6 +18,10 @@ public final class BitVector implements Comparable<BitVector> {
     /**
      * Combine the results of op1 and op2 into result. All the four operators
      * must be of equal length for this operation to succeed.
+     *
+     * @param result op1 and op2
+     * @param op1 first arg
+     * @param op2 second arg
      */
     public static void and(
             final BitVector result,
@@ -28,9 +32,9 @@ public final class BitVector implements Comparable<BitVector> {
             throw new IllegalArgumentException(
                     "both operands and the result must have the same number of bits");
         }
-        
+
         for (int i = 0; i < result.lengthInBytes; i++) {
-            result.bytes[i] = (long) ((long) op1.bytes[i] & (long) op2.bytes[i]);
+            result.bytes[i] = op1.bytes[i] & op2.bytes[i];
         }
     }
     /**
@@ -45,7 +49,6 @@ public final class BitVector implements Comparable<BitVector> {
      * The eight-bit bytes that holds the bits. Non-set bits are all zero.
      */
     private final long[] bytes;
-
 
     /**
      * Create a bit vector that is initialized by the bits described in the
@@ -181,7 +184,6 @@ public final class BitVector implements Comparable<BitVector> {
         hash = 37 * hash + Arrays.hashCode(this.bytes);
         return hash;
     }
-
 
     @Override
     public int compareTo(final BitVector other) {
