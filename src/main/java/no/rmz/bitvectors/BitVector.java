@@ -146,13 +146,16 @@ public final class BitVector implements Comparable<BitVector> {
         for (int i = 0, n = bitString.length(); i < n; i++) {
             final char ch = bitString.charAt(i);
 
-            if (ch == '0') {
-                unset(i);
-            } else if (ch == '1') {
-                set(i);
-            } else {
-                throw new IllegalArgumentException(
-                        "Unknon char in bit input string: " + ch);
+            switch (ch) {
+                case '0':
+                    unset(i);
+                    break;
+                case '1':
+                    set(i);
+                    break;
+                default:
+                    throw new IllegalArgumentException(
+                            "Unknon char in bit input string: " + ch);
             }
         }
     }
