@@ -99,7 +99,7 @@ public final class BitVector implements Comparable<BitVector> {
         checkArg(bit);
         int by = bit / NO_OF_BITS_IN_A_BYTE;
         int bi = bit % NO_OF_BITS_IN_A_BYTE;
-        bytes[by] = (long) (bytes[by] | (1 << bi));
+        bytes[by] |= (1 << bi);
     }
 
     /**
