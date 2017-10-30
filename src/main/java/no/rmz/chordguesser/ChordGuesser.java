@@ -1,15 +1,14 @@
 package no.rmz.chordguesser;
 
-import no.rmz.scales.ScaleCsvReader;
-import no.rmz.scales.ScaleBean;
-import no.rmz.scales.ChordAndScaleDatabase;
-import no.rmz.bitvectors.BitVector;
-import no.rmz.chordguesser.midi.MidiHandler;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import no.rmz.bitvectors.BitVector;
+import no.rmz.chordguesser.midi.MidiHandler;
+import no.rmz.scales.ChordAndScaleDatabase;
+import no.rmz.scales.ScaleBean;
+import no.rmz.scales.ScaleCsvReader;
 
 /**
  * Midi events and have them printed out in a nice manner, then those events
@@ -26,9 +25,6 @@ public final class ChordGuesser {
     public ChordGuesser() throws FileNotFoundException, IOException {
         this.chordDb = ScaleCsvReader.readChordAndScaleDatabaseFromResources();
     }
-    
-    
-   
 
     private final static class ReportingNoteListener implements NoteListener {
 

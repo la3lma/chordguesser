@@ -6,7 +6,8 @@ import static org.junit.Assert.*;
 import org.junit.Ignore;
 import org.junit.Test;
 
-
+// XXX Not even sure that we want the scheduler, far less the
+//     testing.
 @Ignore
 public class SchedulerTest {
 
