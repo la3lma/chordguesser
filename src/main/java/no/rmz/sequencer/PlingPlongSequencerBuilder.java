@@ -1,5 +1,6 @@
 package no.rmz.sequencer;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import javax.sound.midi.MidiDevice;
 
 
@@ -11,8 +12,8 @@ public class PlingPlongSequencerBuilder {
     public PlingPlongSequencerBuilder() {
     }
 
-    public PlingPlongSequencerBuilder setSignalSource(EventSource ss) {
-        this.ss = ss;
+    public PlingPlongSequencerBuilder setSignalSource(final EventSource ss) {
+        this.ss = checkNotNull(ss);
         return this;
     }
 
@@ -21,8 +22,8 @@ public class PlingPlongSequencerBuilder {
         return this;
     }
 
-    public PlingPlongSequencerBuilder setSoundGenerator(SoundGenerator sg) {
-        this.sg = sg;
+    public PlingPlongSequencerBuilder setSoundGenerator(final SoundGenerator sg) {
+        this.sg = checkNotNull(sg);
         return this;
     }
 

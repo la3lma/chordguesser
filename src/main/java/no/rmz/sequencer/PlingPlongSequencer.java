@@ -40,7 +40,6 @@ public final class PlingPlongSequencer {
         });
     }
 
-
     public void start() {
         ss.start();
     }

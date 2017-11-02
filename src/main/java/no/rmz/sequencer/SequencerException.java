@@ -1,7 +1,7 @@
 package no.rmz.sequencer;
 
 
-final class SequencerException extends Exception {
+public final class SequencerException extends Exception {
 
     SequencerException(String string) {
         super(string);
