@@ -135,7 +135,7 @@ public final class FirebasePoller {
         private FirebaseDatabase firebaseDatabase;
         private DatabaseReference midiInputMessages;
 
-        public final void FBMidiReadingEventGenerator(
+        public FBMidiReadingEventGenerator(
                 final String databaseName,
                 final String configFile) {
             this.configFile = checkNotNull(configFile);
@@ -260,15 +260,19 @@ public final class FirebasePoller {
     public final static void main(final String[] argv) throws SequencerException,
             IOException, InterruptedException, JitterPreventionFailureException {
 
-        final String accessJson = "";
-        final String url = "";
+        // These should be gotten from the argv
+        final String configFile = "";  // arg2
+        final String databaseName = ""; // arg1
+        final String pathToListenForEventsIn = ""; // arg3
+        final String midiDeviceName = ""; // arg4
+
 
         final MidiDevice midiDevice
                 = IacDeviceUtilities.getMidiReceivingDevice(IAC_BUS_NAME);
 
         final PlingPlongSequencer seq;
-        final EventSource midiReadingEventSource
-                = new FBMidiReadingEventGenerator(accessJson, url);
+        final EventSource midiReadingEventSource;
+        midiReadingEventSource = new FBMidiReadingEventGenerator(databaseName, configFile);
 
         seq = PlingPlongSequencer.newBuilder()
                 .setDevice(midiDevice)

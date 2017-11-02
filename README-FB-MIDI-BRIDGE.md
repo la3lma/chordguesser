@@ -1,7 +1,7 @@
 Firebase Midi Bridge
 ========
 
-  ./fbmidibridge.java foobarbaz foobarbaz.json   path virtual-midi-device
+  ./fbmidibridge.java foobarbaz foobarbaz.json   path receiving-midi-device
 
 
 ... will work inside the foobarbaz firebase application, using the
