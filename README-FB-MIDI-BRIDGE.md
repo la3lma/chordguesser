@@ -12,3 +12,12 @@ virtual-midi-device
  ./fbmidibridge.jar ls
 
 ...  will list all midi devices that are available as recipients of events.
+
+
+Ideas:
+
+* Add dropwizard into it
+* Receive incoming HTTP post messages, so MIDI can be played using shell and curl.
+* Add some UDP protocol that can receive incoming packages and play them direclty, this will make
+  it possible to make relatively low latency setups with wifi-based
+  instruments.
