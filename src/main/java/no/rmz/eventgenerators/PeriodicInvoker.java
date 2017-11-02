@@ -31,8 +31,6 @@ public final class PeriodicInvoker {
         };
     }
 
-  
-
     public void start() {
         synchronized (isRunning) {
             if (!isRunning.get()) {

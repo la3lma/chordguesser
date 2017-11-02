@@ -6,9 +6,8 @@ public final class MidiMessageDecoder {
 
     private final static int NIBBLE_LENGTH_IN_BITS = 4;
 
-
     public static byte getHighNibble(final byte a) {
-        final byte nibble2 = (byte) ((0xF0 & a) / 16);
+        final byte nibble2 = (byte) ((0xF0 & a) / 16); // Use << instead?
         return nibble2;
     }
 

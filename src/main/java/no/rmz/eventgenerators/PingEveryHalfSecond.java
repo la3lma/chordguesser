@@ -19,23 +19,19 @@ public final class PingEveryHalfSecond implements EventSource {
 
     public PingEveryHalfSecond() {
         this.broadcaster = new EventDistributor();
-        this.pv = new PeriodicInvoker(new Runnable() {
+        this.pv = new PeriodicInvoker(() -> {
+            broadcaster.broadcast(new ParsedEvent() {
 
-            @Override
-            public void run() {
-                broadcaster.broadcast(new ParsedEvent() {
+                @Override
+                public boolean isValid() {
+                    return true;
+                }
 
-                    @Override
-                    public boolean isValid() {
-                        return true;
-                    }
-
-                    @Override
-                    public long getTimestamp() {
-                        return -1;
-                    }
-                });
-            }
+                @Override
+                public long getTimestamp() {
+                    return -1;
+                }
+            });
         });
     }
 

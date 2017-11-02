@@ -18,14 +18,12 @@ public final class MidiInputReceiver implements Receiver {
     private final NoteListener listener;
     private final MidiMessageDecoder mmd;
 
-     public MidiInputReceiver(final String name, final NoteListener listener) {
+    public MidiInputReceiver(final String name, final NoteListener listener) {
          // XXX Check for nulls.
         this.name = name;
         this.listener = listener;
         this.mmd = new MidiMessageDecoder(listener);
     }
-
-
 
     @Override
     public void send(final MidiMessage msg, final long timeStamp) {
