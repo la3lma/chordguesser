@@ -4,7 +4,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import no.rmz.eventgenerators.ParsedEvent;
+import no.rmz.firebasetomidi.FbMidiEventListener;
 
 public final class PlingPlongSequencer {
 
@@ -35,9 +35,14 @@ public final class PlingPlongSequencer {
             throw new IllegalStateException(name + " MIDI receiver unavailable", ex);
         }
 
-        this.ss.addReceiver((ParsedEvent ev) -> {
+        final FbMidiEventListener listener = new FbMidiEventListener();
+
+        this.ss.addReceiver(listener);
+
+        // XXX This was was was originally there.
+        /* (ParsedEvent ev) -> {
             sg.generate(this.rcvr);
-        });
+        }); */
     }
 
     public void start() {

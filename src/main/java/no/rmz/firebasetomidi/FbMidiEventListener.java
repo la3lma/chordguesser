@@ -7,7 +7,7 @@ import no.rmz.eventgenerators.ParsedEvent;
 public final class FbMidiEventListener implements EventReceiver {
 
     public void onFbMidiEvent(final FBMidiEvent event) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
