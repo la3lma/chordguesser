@@ -12,11 +12,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 import javax.sound.midi.MidiDevice;
 import no.rmz.eventgenerators.EventReceiver;
 import no.rmz.eventgenerators.JitterPreventionFailureException;
@@ -37,94 +32,6 @@ public final class FirebasePoller {
 
     private static final Logger LOG = LoggerFactory.getLogger(FirebasePoller.class);
 
-    private final static String IAC_BUS_NAME = "FirebaseInput";
-    private FirebasePoller configFile;
-    private FirebasePoller databaseName;
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference midiInputMessages;
-
-    public static class FBMidiEvent {
-
-        public FBMidiEvent() {
-        }
-    }
-
-    public final static class StorageInitiatedEventExecutor {
-
-        private final static Logger LOG = LoggerFactory.getLogger(StorageInitiatedEventExecutor.class);
-        private final ThreadFactory tf;
-        private final ExecutorService executor;
-        private final Object monitor = new Object();
-
-        private final Set<FbMidiEventListener> purchaseRequestListeners;
-
-        public StorageInitiatedEventExecutor() {
-            this.tf = new ThreadProducer();
-            this.executor = Executors.newCachedThreadPool(tf);
-            this.purchaseRequestListeners = new HashSet<>();
-        }
-
-        public void addMidiEventListener(FbMidiEventListener listener) {
-
-            synchronized (monitor) {
-                purchaseRequestListeners.add(listener);
-            }
-        }
-
-        private final class ThreadProducer implements ThreadFactory {
-
-            private final ThreadFactory tf = Executors.defaultThreadFactory();
-
-            @Override
-            public Thread newThread(Runnable r) {
-                Thread t = tf.newThread(r);
-                t.setName("FbstorageEventHandler");
-                return t;
-            }
-        }
-
-        public void onMidiEvent(final FbMidiEvent event) {
-            synchronized (monitor) {
-                for (final FbMidiEventListener l : purchaseRequestListeners) {
-                    executor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            l.onFbMidiEvent(event);
-                        }
-                    });
-                }
-            }
-        }
-    }
-
-    public abstract class AbstractChildEventListener implements ChildEventListener {
-
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
-
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot snapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
-
-        }
-
-        @Override
-        public void onCancelled(DatabaseError error) {
-
-        }
-    }
-
     public final static class FBMidiReadingEventGenerator implements EventSource {
 
         private static final Logger LOG = LoggerFactory.getLogger(FBMidiReadingEventGenerator.class);
@@ -134,12 +41,17 @@ public final class FirebasePoller {
         private String databaseName;
         private FirebaseDatabase firebaseDatabase;
         private DatabaseReference midiInputMessages;
+        private final String eventpath;
+        private final EventExecutor eventExecutor;
 
         public FBMidiReadingEventGenerator(
                 final String databaseName,
-                final String configFile) {
+                final String configFile,
+                final String eventpath) {
             this.configFile = checkNotNull(configFile);
             this.databaseName = checkNotNull(databaseName);
+            this.eventpath = checkNotNull(eventpath);
+            this.eventExecutor = new EventExecutor();
 
             try (final FileInputStream serviceAccount = new FileInputStream(configFile)) {
 
@@ -167,7 +79,7 @@ public final class FirebasePoller {
             //     health mechanism.
             // https://www.firebase.com/docs/web/guide/offline-capabilities.html#section-connection-state
             // this.firebaseDatabase.getReference("/.info/connected").addValueEventListener()
-            this.midiInputMessages = firebaseDatabase.getReference("authorative-user-storage");
+            this.midiInputMessages = firebaseDatabase.getReference(eventpath);
 
             final ValueEventListener productCatalogValueEventListener
                     = new ValueEventListener() {
@@ -179,6 +91,7 @@ public final class FirebasePoller {
 
                 @Override
                 public void onCancelled(DatabaseError error) {
+                    LOG.info("onDataChange");
                 }
             };
 
@@ -228,12 +141,12 @@ public final class FirebasePoller {
 
         @Override
         public void start() {
-            throw new UnsupportedOperationException("Not supported yet.");
+            // DO we need to start anything?
         }
 
         @Override
-        public void addReceiver(EventReceiver runnable) {
-            throw new UnsupportedOperationException("Not supported yet.");
+        public void addReceiver(final EventReceiver receiver) {
+            eventExecutor.addMidiEventListener((FbMidiEventListener) receiver);
         }
     }
 
@@ -261,22 +174,23 @@ public final class FirebasePoller {
             IOException, InterruptedException, JitterPreventionFailureException {
 
         // These should be gotten from the argv
-        final String configFile = "";  // arg2
-        final String databaseName = ""; // arg1
-        final String pathToListenForEventsIn = ""; // arg3
-        final String midiDeviceName = ""; // arg4
+        final String configFile = "fbmidibridge-1746b45f5da7.json";  // arg2
+        final String databaseName = "fbmidibridge"; // arg1
+        final String pathToListenForEventsIn = "testchannel"; // arg3
+        final String midiDeviceName = "toReason"; // arg4
 
 
         final MidiDevice midiDevice
-                = IacDeviceUtilities.getMidiReceivingDevice(IAC_BUS_NAME);
+                = IacDeviceUtilities.getMidiReceivingDevice(midiDeviceName);
 
         final PlingPlongSequencer seq;
         final EventSource midiReadingEventSource;
-        midiReadingEventSource = new FBMidiReadingEventGenerator(databaseName, configFile);
+        midiReadingEventSource = new FBMidiReadingEventGenerator(databaseName, configFile, pathToListenForEventsIn);
 
         seq = PlingPlongSequencer.newBuilder()
                 .setDevice(midiDevice)
                 .setSignalSource(midiReadingEventSource)
+                .setSoundGenerator(new OneNoteSoundGenerator())
                 .build();
         seq.start();
         Thread.currentThread().join();

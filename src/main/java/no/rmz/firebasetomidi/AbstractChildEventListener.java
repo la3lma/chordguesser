@@ -1,14 +1,33 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package no.rmz.firebasetomidi;
 
-/**
- *
- * @author rmz
- */
-public class AbstractChildEventListener {
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 
+public abstract class AbstractChildEventListener implements ChildEventListener {
+
+    @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+
+    }
+
+    @Override
+    public void onChildChanged(DataSnapshot snapshot, String previousChildName) {
+
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot snapshot) {
+
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot snapshot, String previousChildName) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError error) {
+
+    }
 }
