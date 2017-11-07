@@ -1,19 +1,8 @@
 package no.rmz.firebasetomidi;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.auth.FirebaseCredentials;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import java.io.FileInputStream;
 import java.io.IOException;
 import javax.sound.midi.MidiDevice;
-import no.rmz.eventgenerators.EventReceiver;
+import javax.sound.midi.MidiUnavailableException;
 import no.rmz.eventgenerators.JitterPreventionFailureException;
 import no.rmz.sequencer.*;
 import org.slf4j.Logger;
@@ -31,7 +20,6 @@ import org.slf4j.LoggerFactory;
 public final class FirebasePoller {
 
     private static final Logger LOG = LoggerFactory.getLogger(FirebasePoller.class);
-
 
     /**
      *
@@ -52,9 +40,12 @@ public final class FirebasePoller {
      * @throws IOException
      * @throws InterruptedException
      * @throws JitterPreventionFailureException
+     * @throws javax.sound.midi.MidiUnavailableException
      */
     public final static void main(final String[] argv) throws SequencerException,
-            IOException, InterruptedException, JitterPreventionFailureException {
+            IOException, InterruptedException, JitterPreventionFailureException, MidiUnavailableException {
+
+        LOG.info("Getting started");
 
         // These should be gotten from the argv
         final String configFile = "fbmidibridge-1746b45f5da7.json";  // arg2
@@ -62,20 +53,13 @@ public final class FirebasePoller {
         final String pathToListenForEventsIn = "testchannel"; // arg3
         final String midiDeviceName = "toReason"; // arg4
 
-
         final MidiDevice midiDevice
                 = IacDeviceUtilities.getMidiReceivingDevice(midiDeviceName);
+        final MidiReceiver br = new BufferedMidiReceiver(midiDevice.getReceiver());
 
-        final PlingPlongSequencer seq;
-        final EventSource midiReadingEventSource;
-        midiReadingEventSource = new FBMidiReadingEventGenerator(databaseName, configFile, pathToListenForEventsIn);
+        FBMidiReadingEventGenerator midiReadingEventSource
+                = new FBMidiReadingEventGenerator(databaseName, configFile, pathToListenForEventsIn, br);
 
-        seq = PlingPlongSequencer.newBuilder()
-                .setDevice(midiDevice)
-                .setSignalSource(midiReadingEventSource)
-                .setSoundGenerator(new OneNoteSoundGenerator())
-                .build();
-        seq.start();
         Thread.currentThread().join();
     }
 }

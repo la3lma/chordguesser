@@ -26,7 +26,6 @@ public final class FbMidiEventBean {
         this.strength = strength;
     }
 
-
     public String getCmd() {
         return cmd;
     }
@@ -39,6 +38,7 @@ public final class FbMidiEventBean {
         return note;
     }
 
+    // XXX Should be "getVelocity"
     public int getStrength() {
         return strength;
     }

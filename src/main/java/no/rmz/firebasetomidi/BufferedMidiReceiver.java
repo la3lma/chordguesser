@@ -32,6 +32,7 @@ public final class BufferedMidiReceiver implements MidiReceiver {
     private void sendOldest() throws InterruptedException {
         final ShortMessage msg = queue.take();
         final long timeStamp = -1;
+        LOG.info("Sending short midi message: " + msg);
         recv.send(msg, timeStamp);
     }
 

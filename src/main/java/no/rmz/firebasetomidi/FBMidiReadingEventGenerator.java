@@ -34,18 +34,24 @@ public final class FBMidiReadingEventGenerator implements EventSource {
         checkNotNull(bean);
 
         final MidiCmd cmd = MidiCmd.valueOf(bean.getCmd());
-
+        final ShortMessage myMsg = new ShortMessage();
         switch (cmd) {
             case NOTE_ON:
-                final ShortMessage myMsg = new ShortMessage();
                 try {
-                    // Start playing the note Middle C (60),
-                    // moderately loud (velocity = 93).
-                    myMsg.setMessage(ShortMessage.NOTE_ON, 0, 60, 93);
+                    myMsg.setMessage(ShortMessage.NOTE_ON, bean.getChan(), bean.getNote(), bean.getStrength());
                 } catch (InvalidMidiDataException ex) {
                     throw new IllegalStateException(" couldn't make message", ex);
                 }
                 return myMsg;
+
+            case NOTE_OFF:
+                try {
+                    myMsg.setMessage(ShortMessage.NOTE_OFF, bean.getChan(), bean.getNote(), bean.getStrength());
+                } catch (InvalidMidiDataException ex) {
+                    throw new IllegalStateException(" couldn't make message", ex);
+                }
+                return myMsg;
+
             default:
                 LOG.info("Received MIDI unknown type of MIDI message: " + bean.toString());
         }
