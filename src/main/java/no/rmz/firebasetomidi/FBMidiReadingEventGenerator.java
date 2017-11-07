@@ -1,6 +1,7 @@
 package no.rmz.firebasetomidi;
 
 import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseCredentials;
@@ -11,6 +12,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.io.FileInputStream;
 import java.io.IOException;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.ShortMessage;
+import no.rmz.chordguesser.midi.MidiCmd;
 import no.rmz.eventgenerators.EventReceiver;
 import no.rmz.sequencer.EventSource;
 import org.slf4j.Logger;
@@ -26,7 +30,34 @@ public final class FBMidiReadingEventGenerator implements EventSource {
     private final String eventpath;
     private final EventExecutor eventExecutor;
 
-    public FBMidiReadingEventGenerator(final String databaseName, final String configFile, final String eventpath) {
+    public static ShortMessage asShortMessage(final FbMidiEventBean bean) {
+        checkNotNull(bean);
+
+        final MidiCmd cmd = MidiCmd.valueOf(bean.getCmd());
+
+        switch (cmd) {
+            case NOTE_ON:
+                final ShortMessage myMsg = new ShortMessage();
+                try {
+                    // Start playing the note Middle C (60),
+                    // moderately loud (velocity = 93).
+                    myMsg.setMessage(ShortMessage.NOTE_ON, 0, 60, 93);
+                } catch (InvalidMidiDataException ex) {
+                    throw new IllegalStateException(" couldn't make message", ex);
+                }
+                return myMsg;
+            default:
+                LOG.info("Received MIDI unknown type of MIDI message: " + bean.toString());
+        }
+        throw new IllegalArgumentException("Could not produce a valid MIDI message from input");
+    }
+
+
+    public FBMidiReadingEventGenerator(
+            final String databaseName,
+            final String configFile,
+            final String eventpath,
+            final MidiReceiver midiReceiver) {
         this.configFile = Preconditions.checkNotNull(configFile);
         this.databaseName = Preconditions.checkNotNull(databaseName);
         this.eventpath = Preconditions.checkNotNull(eventpath);
@@ -50,6 +81,8 @@ public final class FBMidiReadingEventGenerator implements EventSource {
         // https://www.firebase.com/docs/web/guide/offline-capabilities.html#section-connection-state
         // this.firebaseDatabase.getReference("/.info/connected").addValueEventListener()
         this.midiInputMessages = firebaseDatabase.getReference(eventpath);
+
+        // XXX This value event thing is probably not something we need.
         final ValueEventListener productCatalogValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -78,8 +111,15 @@ public final class FBMidiReadingEventGenerator implements EventSource {
                 try {
                     final FbMidiEventBean midiEvent = snapshot.getValue(FbMidiEventBean.class);
                     LOG.info("just read midi event bean " + midiEvent);
-                    // Then send the FbMidiEvent somewhere where can be heard
-                    // XXX Send the MIDI event to something running in some other thread.
+
+                    final ShortMessage shortMidiMessage = asShortMessage(midiEvent);
+
+                    LOG.info("Short message =  " + shortMidiMessage);
+                    midiReceiver.put(shortMidiMessage);
+
+                    // XXX Missing
+                    //  o Send event to midi (in separate thread etc)
+                    //  o Get rid message that was just read from Firebase.
                 } catch (Exception e) {
                     LOG.error("Couldn't transform req into FbPurchaseRequest", e);
                 }
