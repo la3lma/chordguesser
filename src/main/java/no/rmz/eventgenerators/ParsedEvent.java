@@ -10,5 +10,4 @@ public interface ParsedEvent {
     boolean isValid();
     
     long getTimestamp();
-    
 }

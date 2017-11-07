@@ -1,5 +1,6 @@
 package no.rmz.chordguesser.midi;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import no.rmz.chordguesser.NoteListener;
 
 public final class MidiMessageDecoder {
@@ -48,7 +49,7 @@ public final class MidiMessageDecoder {
     final NoteListener listener;
 
     public MidiMessageDecoder(final NoteListener listener) {
-        // XXX Null check missing!
+        checkNotNull(listener);
         this.listener = listener;
     }
 
